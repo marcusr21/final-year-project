@@ -25,10 +25,15 @@ $(document).ready(function() {
       e.preventDefault(e);
     }
   });
+  $(function() {
+    $("#datepicker").datepicker();
+  });
 });
 </script>
 
-
+<div>
+  Date: <input type="text" id="datepicker">
+</div>
 <!--Login form-->
 <div>
   <h3>Login</h3>

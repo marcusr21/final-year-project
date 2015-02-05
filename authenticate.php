@@ -17,6 +17,7 @@ if($result=mysqli_query($conn,$sql)){
   if(password_verify($password, $hash)){
     $_SESSION['first'] = $first;
     $_SESSION['user'] = $user;
+    mysqli_free_result($result);
     header('Location: splash.php');
   }
   else {
