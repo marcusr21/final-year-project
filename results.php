@@ -6,9 +6,18 @@ $search=$_REQUEST['q'];
 $i=0;
 include('header.php');
 ?>
-
+<script>
+  $(document).ready(function(){
+    $(function() {
+      $("#datepicker").datepicker();
+    });
+})
+</script>
 <div class="resultFilter">
+  Date: <input type="text" id="datepicker">
   <?php
+
+  //ajax retrieve from jquery datepicker.value
   $date=''
   ?>
 </div>
@@ -31,7 +40,7 @@ if($search==""){
       echo "</div>";
       echo "<div class='button'>";
       echo "<a href='details.php?barcode=".$barcode[i]."&date=".$timestamp."'>Loan this item";
-      i++;
+      $i++;
     }
   }
 }
