@@ -11,7 +11,10 @@ include('header.php');
     $(function() {
       $("#datepicker").datepicker();
     });
-})
+    $("#datepicker").on("blur", function(){
+      var datepickerValue = datepicker.value;
+    });
+});
 </script>
 <div class="resultFilter">
   Date: <input type="text" id="datepicker">
