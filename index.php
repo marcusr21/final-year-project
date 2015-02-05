@@ -1,4 +1,9 @@
 <?php
+session_start();
+$url = $_SESSION['url'];
+?>
+
+<?php
 //include_once('connect.php');
 include('header.php');
 ?>
@@ -13,7 +18,13 @@ $(document).ready(function() {
     if(is_email){input.removeClass("invalid").addClass("valid");}
     else{input.removeClass("valid").addClass("invalid");}
   });
-  $('#register').on()
+
+  $('#registerButton').click(function(e){
+    if($('#email').hasClass("invalid")){
+      alert('Please complete all registration fields');
+      e.preventDefault(e);
+    }
+  });
 });
 </script>
 
@@ -34,9 +45,12 @@ $(document).ready(function() {
     First name: <input type="text" name="fname"><br>
     Surname: <input type="text" name="sname"><br>
     Email: <input type="text" id="email" name="email"><br><!--live check required-->
-    Username: <input type="text" name="username"><br>
+    Username: <input type="text" name="username">
+    <?php if($url == '/userFunction.php'){
+      echo "Please choose a new username";
+    } ?><br>
     Password: <input type="password" name="password"><br> <!-- live checking-->
-    <input type="submit" value="register">
+    <input type="submit" value="register" id="registerButton">
   </form>
 </div>
 
