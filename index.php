@@ -13,6 +13,7 @@ $(document).ready(function() {
     if(is_email){input.removeClass("invalid").addClass("valid");}
     else{input.removeClass("valid").addClass("invalid");}
   });
+  $('#register').on()
 });
 </script>
 
@@ -20,10 +21,10 @@ $(document).ready(function() {
 <!--Login form-->
 <div>
   <h3>Login</h3>
-  <form name="login" id="login" action="userFunction.php" method="post">
+  <form name="login" id="login" action="authenticate.php" method="post">
     Username: <input type="text" name="username"><br>
     Password: <input type="password" name="password"><br>
-    <input type="submit" value="Submit">
+    <input type="submit" value="submit">
   </form>
 </div>
 <!--Register form-->
@@ -35,7 +36,7 @@ $(document).ready(function() {
     Email: <input type="text" id="email" name="email"><br><!--live check required-->
     Username: <input type="text" name="username"><br>
     Password: <input type="password" name="password"><br> <!-- live checking-->
-    <input type="submit" value="Register">
+    <input type="submit" value="register">
   </form>
 </div>
 

@@ -8,6 +8,7 @@ $first = $_REQUEST['fname'];
 $surname = $_REQUEST['sname'];
 $password = $_REQUEST['password'];
 
+//Need to check and make sure no fields are blank
 
   $hash = password_hash($password, PASSWORD_BCRYPT);
 
@@ -22,12 +23,5 @@ $password = $_REQUEST['password'];
   else {
     echo "Error: " . $registerQuery . "<br>" . $conn->error;
   }
-
-
-  //echo "Success!";
-  //header("Location: splash.php");
-
-
-  //execute login function using username and password
 
 ?>

@@ -1,7 +1,7 @@
 <?php
 session_start();
+//gap to start session
 ?>
-//Gap to start session before echoing anything to page
 <?php
 include('header.php');
 echo "Success! Welcome back ".$_SESSION["first"]."<br>";
