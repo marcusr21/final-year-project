@@ -1,41 +1,33 @@
 <?php
-$email = $_POST['email'];
-$user = $_POST['username'];
+session_start();
+$conn = mysqli_connect("localhost", "root", "toor", "nsumedia2");
 
-if (isset($_POST['action'])){
-  switch($_POST['action']){
-    case 'login':
-      login();
-      break;
-    case 'register':
-      register($email, $user);
-      break;
+$email = $_REQUEST['email'];
+$user = $_REQUEST['username'];
+$first = $_REQUEST['fname'];
+$surname = $_REQUEST['sname'];
+$password = $_REQUEST['password'];
+
+
+  $hash = password_hash($password, PASSWORD_BCRYPT);
+
+  $registerQuery = "INSERT INTO user (username, firstname, surname, email, password, access) VALUES ('$user', '$first', '$surname', '$email', '$hash', 'S')";
+
+  if ($conn->query($registerQuery) === TRUE){
+
+    $_SESSION['first'] = $first;
+    $_SESSION['user'] = $user;
+    header('Location: splash.php');
   }
-}
-
-function login() {
-
-}
-
-function register($email, $user) {
-  $emailTest = mysql_real_escape_string($email);
-  $userTest = mysql_real_escape_string($user);
-  $emailResult = mysql_query(
-  "SELECT email FROM users WHERE email='$emailTest' LIMIT 1"
-  );
-
-  if(mysql_fetch_array($emailResult) !== false){
-    //redirect back to page - highlight email and say no
+  else {
+    echo "Error: " . $registerQuery . "<br>" . $conn->error;
   }
 
-  $userResult = mysql_query(
-  "SELECT username FROM users WHERE username='$userTest' LIMIT 1"
-  );
 
-  if(mysql_fetch_array($userResult) !== false){
-    //redirect back to page - highlight user and say no
-  }
+  //echo "Success!";
+  //header("Location: splash.php");
 
-}
+
+  //execute login function using username and password
 
 ?>

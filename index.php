@@ -1,5 +1,5 @@
 <?php
-include_once('connect.php');
+//include_once('connect.php');
 include('header.php');
 ?>
 
@@ -19,7 +19,8 @@ $(document).ready(function() {
 
 <!--Login form-->
 <div>
-  <form name="login" action="userFunction.php" method="post">
+  <h3>Login</h3>
+  <form name="login" id="login" action="userFunction.php" method="post">
     Username: <input type="text" name="username"><br>
     Password: <input type="password" name="password"><br>
     <input type="submit" value="Submit">
@@ -27,7 +28,8 @@ $(document).ready(function() {
 </div>
 <!--Register form-->
 <div>
-  <form name="register" action="userFunction.php" method="post">
+  <h3>Register</h3>
+  <form name="register" id="register" action="userFunction.php" method="post">
     First name: <input type="text" name="fname"><br>
     Surname: <input type="text" name="sname"><br>
     Email: <input type="text" id="email" name="email"><br><!--live check required-->
