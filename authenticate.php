@@ -20,6 +20,7 @@ if($result=mysqli_query($conn,$sql)){
     header('Location: splash.php');
   }
   else {
+    $_SESSION['url'] = $_SERVER['REQUEST_URI'];
     header('Location: index.php');
   }
 

@@ -8,12 +8,13 @@ $first = $_REQUEST['fname'];
 $surname = $_REQUEST['sname'];
 $password = $_REQUEST['password'];
 
-//Need to check and make sure no fields are blank
-
+//If username taken, redirect and try again
 $sql = "SELECT username FROM user WHERE username='$user' LIMIT 1";
 if($result=mysqli_query($conn,$sql)){
   $_SESSION['url'] = $_SERVER['REQUEST_URI'];
   header('Location: index.php');
+  //Need to figure out how to repopulate form
+  //Send back in session and then clear?!
 }
 else {
 

@@ -33,6 +33,11 @@ $(document).ready(function() {
 <div>
   <h3>Login</h3>
   <form name="login" id="login" action="authenticate.php" method="post">
+    <?php
+    if($url == '/authenticate.php'){
+      echo "Login details incorrect, please try again";
+    }
+    ?>
     Username: <input type="text" name="username"><br>
     Password: <input type="password" name="password"><br>
     <input type="submit" value="submit">
