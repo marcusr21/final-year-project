@@ -38,7 +38,7 @@ $(document).ready(function() {
 
 Date: <input type="text" id="datepicker">
 <!--Login form-->
-<div>
+<div class="container">
   <h3>Login</h3>
   <form name="login" id="login" action="authenticate.php" method="post">
     <?php
@@ -46,24 +46,38 @@ Date: <input type="text" id="datepicker">
       echo "Login details incorrect, please try again";
     }
     ?>
-    Username: <input type="text" name="username"><br>
-    Password: <input type="password" name="password"><br>
-    <input type="submit" value="submit">
+    <div class="form-group">
+      Username: <input type="text" name="username"><br>
+    </div>
+    <div class="form-group">
+      Password: <input type="password" name="password"><br>
+    </div>
+    <input class="btn btn-default btn-sm" type="submit" value="Submit">
   </form>
 </div>
 <!--Register form-->
-<div>
+<div class="container">
   <h3>Register</h3>
   <form name="register" id="register" action="userFunction.php" method="post">
-    First name: <input type="text" name="fname"><br>
-    Surname: <input type="text" name="sname"><br>
-    Email: <input type="text" id="email" name="email"><br><!--live check required-->
-    Username: <input type="text" name="username">
+    <div class="form-group">
+      First name: <input type="text" name="fname"><br>
+    </div>
+    <div class="form-group">
+      Surname: <input type="text" name="sname"><br>
+    </div>
+    <div class="form-group">
+      Email: <input type="text" id="email" name="email"><br><!--live check required-->
+    </div>
+    <div class="form-group">
+      Username: <input type="text" name="username">
     <?php if($url == '/userFunction.php'){
       echo "Please choose a new username";
     } ?><br>
-    Password: <input type="password" name="password"><br> <!-- live checking-->
-    <input type="submit" value="register" id="registerButton">
+    </div>
+    <div class="form-group">
+      Password: <input type="password" name="password"><br> <!-- live checking-->
+    </div>
+    <input class="btn btn-default btn-sm" type="submit" value="Register" id="registerButton">
   </form>
 </div>
 
