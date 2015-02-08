@@ -5,6 +5,7 @@ $search=$_REQUEST['q'];
 <?php
 $i=0;
 include('header.php');
+include('connect.php');
 ?>
 <script>
   $(document).ready(function(){
@@ -27,7 +28,8 @@ include('header.php');
 
 <?php
 if($search==""){
-  $searchQuery="SELECT barcode, make, model, tags, category, description FROM assets";
+  $searchQuery="SELECT barcode, make, model, tags, category.category, description FROM assets INNER JOIN category
+  ON assets.category=category.id";
   if($result=mysqli_query($conn,$searchQuery))
   {
     while($row=mysqli_fetch_row($result)){
@@ -37,14 +39,17 @@ if($search==""){
       $category[i]=$row[4];
       $desc[i]=$row[5];
       echo "<div>";
-      echo "Make: ".$make[i]." Model: ".$model[i]."<br>";
+      echo "Make: ".$make[i]."<br> Model: ".$model[i]."<br>";
       echo "Category: ".$category[i]."<br>";
       echo "Description: ".$desc[i]."<br>";
       echo "</div>";
       echo "<div class='button'>";
-      echo "<a href='details.php?barcode=".$barcode[i]."&date=".$timestamp."'>Loan this item";
+      echo "<a href='details.php?barcode=".$barcode[i]."&date=".$timestamp."'>Loan this item</a>";
       $i++;
     }
+  }
+  else {
+
   }
 }
 ?>
