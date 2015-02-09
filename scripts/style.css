@@ -5,3 +5,7 @@ input.invalid, textarea.invaliud {
 input.valid, textarea.valid{
   border: 2px solid green;
 }
+
+.errorMessage{
+  color: #FF0000;
+}

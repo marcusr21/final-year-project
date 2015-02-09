@@ -3,6 +3,7 @@ session_start();
 $search=$_REQUEST['q'];
 ?>
 <?php
+$current_url = $_SERVER['REQUEST_URI'];
 $i=0;
 include('header.php');
 include('connect.php');
@@ -53,13 +54,17 @@ if($search==""){
       $model[i]=$row[2];
       $category[i]=$row[4];
       $desc[i]=$row[5];
-      echo "<div>";
+      echo "<div class='container'>";
+      echo "<form method='post' action='basket_update.php'>";
       echo "Make: ".$make[i]."<br> Model: ".$model[i]."<br>";
       echo "Category: ".$category[i]."<br>";
       echo "Description: ".$desc[i]."<br>";
+      echo "<button class='btn btn-default btn-sml'>Add to basket</button>";
+      echo "<input type='hidden' name='barcode' value='".$barcode[i]."' />";
+      echo "<input type='hidden' name='url' value='".$current_url."' />";
+      echo "<input type='hidden' name='type' value='add' />";
+      echo "</form>";
       echo "</div>";
-      echo "<div class='button'>";
-      echo "<a class='btn btn-default btn-sml' href='basket_update.php?barcode=".$barcode[i]."&start=".$start."&end=".$end."'>Add to basket</a>";
       $i++;
     }
   }
@@ -78,10 +83,11 @@ if($search==""){
       echo '<ol>';
       foreach($_SESSION['products'] as $item){
         echo '<li class=cart-item>';
-        echo '<span class="remove-item"><a href="basket_update.php?remove='.$item["barcode"].'&returnurl='.$current_url.'"</a></span>';
-        echo '<strong>'.$item["make"].' '.$item["model"].'</strong>';
-        echo '<div class="startDate">Start Date: '.$item["start"].'</div>';
-        echo '<div class="endDate>"End Date: '.$item["end"].'</div>';
+        echo '<strong>'.$item["make"].' '.$item["model"].' </strong>';
+        echo '<span class="errorMessage">'.$item["message"].'</span>';
+        //echo '<div class="startDate">Start Date: '.$item["start"].'</div>';
+        //echo '<div class="endDate>"End Date: '.$item["end"].'</div>';
+        echo '<span class="btn btn-default btn-sml"><a href="basket_update.php?remove='.$item["barcode"].'&returnurl='.$current_url.'">Remove this item</a></span>';
         echo '</li>';
       }
       echo '</ol>';
