@@ -2,6 +2,12 @@
 session_start();
 require_once('connect.php');
 
+if(isset($_GET['remove']) && $_GET['remove']=='all'){
+  $return_url=$_GET['returnurl'];
+  unset($_SESSION['products']);
+  header('Location: '.$return_url);
+}
+
 if(isset($_POST["type"]) && $_POST["type"] == "add"){
   $barcode=$_POST["barcode"];
   $return_url=$_POST["url"];
@@ -11,6 +17,7 @@ if(isset($_POST["type"]) && $_POST["type"] == "add"){
     while($row=mysqli_fetch_array($result))
     {
       $new_item=array(array('barcode'=>$barcode, 'make'=>$row[0], 'model'=>$row[1]));
+      //New array containing any information that is required
     }
 
     if(isset($_SESSION['products'])){
@@ -20,8 +27,9 @@ if(isset($_POST["type"]) && $_POST["type"] == "add"){
         if($bask_item["barcode"]==$barcode){
           $item[]=array('barcode'=>$bask_item['barcode'], 'make'=>$bask_item['make'], 'model'=>$bask_item['model'], 'message'=>'you have already added this item!');
           $found=true;
+          //If the item we are attempting to add exists, display error message to user
         }
-        else {
+        else { //Prepare the array for merging into the session
           $item[]=array('barcode'=>$bask_item['barcode'], 'make'=>$bask_item['make'], 'model'=>$bask_item['model']);
         }
       }
@@ -42,7 +50,22 @@ if(isset($_POST["type"]) && $_POST["type"] == "add"){
     }
     else{
       $_SESSION["products"]=$new_item;
+      //If this is a new session or no items in basket, create the session
     }
+  }
+  header('Location: '.$return_url);
+}
+
+if(isset($_GET['remove']) && isset($_GET['returnurl']) && isset($_SESSION['products'])){
+  $barcode=$_GET['remove'];
+  $return_url=$_GET['returnurl'];
+
+  foreach($_SESSION['products'] as $bask_item){
+    if($bask_item['barcode']!=$barcode){
+      $item[]=array('barcode'=>$bask_item['barcode'], 'make'=>$bask_item['make'], 'model'=>$bask_item['model']);
+    }
+
+    $_SESSION['products']=$item;
   }
   header('Location: '.$return_url);
 }

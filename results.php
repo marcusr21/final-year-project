@@ -91,6 +91,7 @@ if($search==""){
         echo '</li>';
       }
       echo '</ol>';
+      echo '<a href="basket_update.php?remove=all&returnurl='.$current_url.'">Remove all items</a>';
       echo '<span class="check-out"><a class="btn btn-default btn-sml" href="view_basket.php">Check out</a></span>';
     }
     else {
