@@ -10,7 +10,8 @@ $password = $_REQUEST['password'];
 
 //If username taken, redirect and try again
 $sql = "SELECT username FROM user WHERE username='$user' LIMIT 1";
-if($result=mysqli_query($conn,$sql)){
+$result=mysqli_query($conn, $sql);
+if(mysqli_num_rows($result) != 0){
   $_SESSION['url'] = $_SERVER['REQUEST_URI'];
   header('Location: index.php');
   //Need to figure out how to repopulate form

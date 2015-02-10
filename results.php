@@ -1,12 +1,14 @@
 <?php
 session_start();
 $search=$_REQUEST['q'];
+$first=$_SESSION['first'];
 ?>
 <?php
 $current_url = $_SERVER['REQUEST_URI'];
 $i=0;
 include('header.php');
 include('connect.php');
+echo "Welcome back ".$first;
 ?>
 <script>
   $(document).ready(function(){
