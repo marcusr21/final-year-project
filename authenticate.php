@@ -5,18 +5,20 @@ $conn = mysqli_connect("localhost", "root", "toor", "nsumedia2");
 $user = $_REQUEST['username'];
 $password = $_REQUEST['password'];
 
-$sql="SELECT username, password, firstname FROM user WHERE username = '$user'";
+$sql="SELECT UID, username, password, firstname FROM user WHERE username = '$user'";
 
 if($result=mysqli_query($conn,$sql)){
   while ($row=mysqli_fetch_row($result))
   {
-    $hash = $row[1];
-    $first = $row[2];
+    $UID=$row[0];
+    $hash = $row[2];
+    $first = $row[3];
   }
 
   if(password_verify($password, $hash)){
     $_SESSION['first'] = $first;
     $_SESSION['user'] = $user;
+    $_SESSION['uid'] = $UID;
     mysqli_free_result($result);
     header('Location: splash.php');
   }
