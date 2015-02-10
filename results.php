@@ -10,14 +10,46 @@ include('connect.php');
 ?>
 <script>
   $(document).ready(function(){
-    $(function() {
-      $("#datepicker").datepicker();
+    $('#startDate').datepicker({
+      defaultDate: "+1w",
+      numberOfMonths: 1,
+      dateFormat: "dd-mm-yy",
+      onClose: function(selectedDate) {
+        $('#endDate').datepicker("option", "minDate", selectedDate);
+        var startDateVal=$('#startDate').datepicker("getDate");
+        $.ajax({
+          type: 'POST',
+          url: 'ajax.php',
+          data: "start=" + startDateVal,
+          dataType: 'json',
+          success: function(json)
+          {
+            $("#start").val(json.start);
+            console.log(json);
+          }
+        });
+      }
     });
-    $(function() {
-      $("#endDatepicker").datepicker();
-    });
-    $("#datepicker").on("blur", function(){
-      var datepickerValue = datepicker.value;
+    $('#endDate').datepicker({
+      defaultDate: "1+w",
+      numberOfMonths: 1,
+      dateFormat: "dd-mm-yy",
+      onClose: function(selectedDate) {
+        $('#startDate').datepicker("option", "maxDate", selectedDate);
+        var endDateVal=$('#endDate').datepicker("getDate");
+        //var endDataString = "end=" + endDateVal;
+        $.ajax({
+          type: 'POST',
+          url: 'ajax.php',
+          data: "end=" + endDateVal,
+          dataType: 'json',
+          success: function(json)
+          {
+            $("#end").val(json.end);
+            console.log(json);
+          }
+        });
+      }
     });
 
     $('#resultFilter').affix({
@@ -29,15 +61,11 @@ include('connect.php');
 });
 </script>
 <div class="container">
+  <div class="data">
+  </div>
   <div class="resultFilter">
-    <p>Test data</p>
-    Start Date: <input type="text" id="datepicker">
-    End Date: <input type="text" id="endDatepicker">
-    <?php
-
-    //ajax retrieve from jquery datepicker.value
-    $date=''
-    ?>
+    Start Date: <input type="text" id="startDate">
+    End Date: <input type="text" id="endDate">
   </div>
 </div>
 
@@ -59,9 +87,11 @@ if($search==""){
       echo "Make: ".$make[i]."<br> Model: ".$model[i]."<br>";
       echo "Category: ".$category[i]."<br>";
       echo "Description: ".$desc[i]."<br>";
-      echo "<button class='btn btn-default btn-sml'>Add to basket</button>";
+      echo "<button class='btn btn-primary btn-sml'>Add to basket</button>";
       echo "<input type='hidden' name='barcode' value='".$barcode[i]."' />";
       echo "<input type='hidden' name='url' value='".$current_url."' />";
+      echo "<input type='hidden' name='start' id='start' value=''>";
+      echo "<input type='hidden' name='end' id='end' value=''>";
       echo "<input type='hidden' name='type' value='add' />";
       echo "</form>";
       echo "</div>";
@@ -85,14 +115,14 @@ if($search==""){
         echo '<li class=cart-item>';
         echo '<strong>'.$item["make"].' '.$item["model"].' </strong>';
         echo '<span class="errorMessage">'.$item["message"].'</span>';
-        //echo '<div class="startDate">Start Date: '.$item["start"].'</div>';
-        //echo '<div class="endDate>"End Date: '.$item["end"].'</div>';
-        echo '<span class="btn btn-default btn-sml"><a href="basket_update.php?remove='.$item["barcode"].'&returnurl='.$current_url.'">Remove this item</a></span>';
+        echo '<div class="startDate">Start Date: '.$item["start"].'</div>';
+        echo '<div class="endDate">End Date: '.$item["end"].'</div>';
+        echo '<a class="btn btn-danger btn-sml" href="basket_update.php?remove='.$item["barcode"].'&returnurl='.$current_url.'">Remove this item</a>';
         echo '</li>';
       }
       echo '</ol>';
       echo '<a href="basket_update.php?remove=all&returnurl='.$current_url.'">Remove all items</a>';
-      echo '<span class="check-out"><a class="btn btn-default btn-sml" href="view_basket.php">Check out</a></span>';
+      echo '<span class="check-out"><a class="btn btn-default btn-sml" href="basket.php?returnurl='.$current_url.'">Check out</a></span>';
     }
     else {
       echo 'Your basket is empty';
