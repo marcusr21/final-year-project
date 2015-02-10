@@ -31,14 +31,18 @@ foreach($_POST['make'] as $key=>$make){
 }
 
 $sqlLoan="INSERT INTO loan (count, plannedStart, plannedEnd, UID) VALUES ('$i', '$start', '$end', '$uid')";
-mysqli_query($conn, $sqlLoan);
-$loanNumber = mysqli_insert_id($conn);
+if($result=mysqli_query($conn, $sqlLoan)){
+  $loanNumber = mysqli_insert_id($conn);
+}
+else {
+  echo "error: ".$sqlLoan."<br/>".$conn->error;
+}
 
 $count=0;
 while($count<=$i){
   $bcodeVal=$barcode[$count];
   $sql="INSERT INTO loantoasset (loanNumber, barcode) VALUES ('$loanNumber', '$bcodeVal')";
-  mysqli_query($conn, $sqlLoan);
+  $conn->query($sql);
   $count++;
 }
 
@@ -51,8 +55,10 @@ $email_message .= $description;
 $headers = "From: ".$email_from."\r\n".
 "Reply-To: ".$email_from."\r\n".
 "X-Mailer: PHP/".phpversion();
-@mail($email_to, $email_subject, $email_message, $headers);
+mail($email_to, $email_subject, $email_message, $headers);
 
+echo $uid;
+echo $email_from;
 ?>
 
 <div class="container">
