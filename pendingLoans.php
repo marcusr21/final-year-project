@@ -87,12 +87,18 @@ if($permission=="A"){
   }
 }
 elseif($permission=="C"){
+  $selectUser="SELECT UID, firstname, surname FROM user WHERE access='A'";
+  $results=mysqli_query($conn, $selectUser);
+  while($user=mysqli_fetch_array($results)){
+      
+  }
+
   $selectQuery="SELECT loan.loanNumber, count, plannedStart, plannedEnd, user.UID, firstname, surname, approver
   FROM loan INNER JOIN user ON loan.UID=user.UID
   WHERE actualStart IS NULL AND approved ='Y'";
 
-  if($results=mysqli_query($conn, $selectQuery)){
-    while($row=mysqli_fetch_array($results)){
+  if($result=mysqli_query($conn, $selectQuery)){
+    while($row=mysqli_fetch_array($result)){
       echo "<div class='container'>\n";
       echo "<form name='checkout' action='cehckout.php' method='POST'>\n";
       echo "Loanee: ".$row['firstname']." ".$row['surname']."<br/>\n";
