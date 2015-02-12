@@ -26,6 +26,7 @@ else {
   if ($conn->query($registerQuery) === TRUE){
     $_SESSION['first'] = $first;
     $_SESSION['user'] = $user;
+    $_SESSION['uid'] = mysqli_insert_id($conn);
     header('Location: splash.php');
   }
   else {
