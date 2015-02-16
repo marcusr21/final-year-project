@@ -15,6 +15,9 @@
   <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
 </head>
 <body>
+  <?php
+  date_default_timezone_set('UTC');
+  ?>
   <div class="container">
     <h1>NSU:Media</h1>
     <h2>At Northumbria Students Union</h2>
