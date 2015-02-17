@@ -1,11 +1,12 @@
 <?php
-    $key=$_GET['key'];
+require_once('connect.php');
+    $key=$_GET['q'];
     $array = array();
-    $conn=mysqli_connect("localhost","root","toor", "nsumedia2");
-    $query=mysql_query("select * from assets where description LIKE '%{$key}%'");
-    while($row=mysql_fetch_assoc($query))
+    $sql="SELECT * FROM assets WHERE description like '%$key%'";
+    $query=mysqli_query($conn, $sql);
+    while($row=mysqli_fetch_array($query))
     {
-      $array[] = $row['title'];
+      $array[] = $row['make'];
     }
     echo json_encode($array);
 ?>
