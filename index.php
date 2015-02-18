@@ -25,18 +25,9 @@ $(document).ready(function() {
       e.preventDefault(e);
     }
   });
-  $(function() {
-    $("#datepicker").datepicker();
-  });
-
-  datepicker.blur(function(){
-    var input=$("#datepicker");
-    var datepickerValue = input.value();
-  });
 });
 </script>
 
-Date: <input type="text" id="datepicker">
 <!--Login form-->
 <div class="container">
   <h3>Login</h3>
