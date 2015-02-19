@@ -12,19 +12,25 @@ include('connect.php');
 echo "<div class='container'>";
 echo "Welcome back ".$first;
 echo "</div>";
+if($search=="" && $barcode ==""){
+  $searchQuery="SELECT barcode, make, model, tags, category.category, description FROM assets INNER JOIN category
+  ON assets.category=category.id";
+  if($result=mysqli_query($conn,$searchQuery))
+  {
+    while($row=mysqli_fetch_row($result)){
+      $barcodeArray[$i]=$row[0];
+      $make[$i] = $row[1];
+      $model[$i]=$row[2];
+      $category[$i]=$row[4];
+      $desc[$i]=$row[5];
+      $tags[$i]=$row[3];
+      $i++;
+    }
+  }
+}
 ?>
 <script>
   $(document).ready(function(){
-
-    $('#resultFilter').affix({
-      offset: { top: $('#results').offset().top }
-    });
-
-    $('#shopping-basket').affix({
-      offset: {
-        top: $('.container').offset().top
-      }
-    });
 
     $('#startDate').datepicker({
       defaultDate: "+1w",
@@ -67,6 +73,17 @@ echo "</div>";
         });
       }
     });
+
+
+        $('#resultFilter').affix({
+          offset: { top: $('#results').offset().top }
+        });
+
+        $('#shopping-basket').affix({
+          offset: {
+            top: $('#results').offset().top
+          }
+        });
 });
 </script>
 <div class="container">
@@ -74,44 +91,39 @@ echo "</div>";
     <div id="resultFilter" data-spy="affix" class="navbar">
       Start Date: <input type="text" id="startDate">
       End Date: <input type="text" id="endDate">
-      <?php
-      
-      ?>
+      <form id='filters' name='filters'>
+        <?php
+        //get all possible filter info from previous functions
+        $uniqueCategory=array_unique($category);
+        foreach($uniqueCategory as $cat){
+          echo "<input type='radio' name='category' value='".$cat."'>".$cat;
+        }
+        echo "<input type='submit' value='Search!' class='btn btn-primary btn-sml'>";
+        ?>
+      </form>
     </div>
   </div>
 
   <div id="results">
 <?php
-if($search=="" && $barcode ==""){
-  $searchQuery="SELECT barcode, make, model, tags, category.category, description FROM assets INNER JOIN category
-  ON assets.category=category.id";
-  if($result=mysqli_query($conn,$searchQuery))
-  {
-    while($row=mysqli_fetch_row($result)){
-      $barcode[$i]=$row[0];
-      $make[$i] = $row[1];
-      $model[$i]=$row[2];
-      $category[$i]=$row[4];
-      $desc[$i]=$row[5];
-      echo "<div class='form-group'>";
-      echo "<form method='post' action='basket_update.php'>";
-      echo "Make: ".$make[$i]."<br> Model: ".$model[$i]."<br>";
-      echo "Category: ".$category[$i]."<br>";
-      echo "Description: ".$desc[$i]."<br>";
-      echo "<button class='btn btn-primary btn-sml'>Add to basket</button>";
-      echo "<input type='hidden' name='barcode' value='".$barcode[$i]."' />";
-      echo "<input type='hidden' name='url' value='".$current_url."' />";
-      echo "<input type='hidden' name='start' id='start' value=''>";
-      echo "<input type='hidden' name='end' id='end' value=''>";
-      echo "<input type='hidden' name='type' value='add' />";
-      echo "</form>";
-      echo "</div>";
+if($search=="" && $barcode == ""){
+  for($count=0; $count < count($barcodeArray); $count++){
+      echo "<div class='form-group'>\n";
+      echo "<form name='add' method='POST' action='basket_update.php'>\n";
+      echo "Make: ".$make[$count]."<br> Model: ".$model[$count]."<br>\n";
+      echo "Category: ".$category[$count]."<br>\n";
+      echo "Description: ".$desc[$count]."<br>\n";
+      echo "<input type='submit' value='Add to Basket' class='btn btn-primary btn-sml'>\n";
+      echo "<input type='hidden' name='barcode' value='".$barcodeArray[$count]."' />\n";
+      echo "<input type='hidden' name='url' value='".$current_url."' />\n";
+      echo "<input type='hidden' name='start' id='start' value='' />\n";
+      echo "<input type='hidden' name='end' id='end' value='' />\n";
+      echo "<input type='hidden' name='type' value='add' />\n";
+      echo "</form>\n";
+      echo "</div>\n";
       $i++;
     }
   }
-  else{
-  }
-}
 elseif($barcode!=""){
   $searchQuery="SELECT barcode, make, model, tags, category.category, description FROM assets INNER JOIN category
   ON assets.category=category.id WHERE barcode='$barcode'";
@@ -123,19 +135,19 @@ elseif($barcode!=""){
       $model[$i]=$row[2];
       $category[$i]=$row[4];
       $desc[$i]=$row[5];
-      echo "<div class='form-group'>";
-      echo "<form method='post' action='basket_update.php'>";
-      echo "Make: ".$make[$i]."<br> Model: ".$model[$i]."<br>";
-      echo "Category: ".$category[$i]."<br>";
-      echo "Description: ".$desc[$i]."<br>";
-      echo "<button class='btn btn-primary btn-sml'>Add to basket</button>";
-      echo "<input type='hidden' name='barcode' value='".$barcode[$i]."' />";
-      echo "<input type='hidden' name='url' value='".$current_url."' />";
-      echo "<input type='hidden' name='start' id='start' value=''>";
-      echo "<input type='hidden' name='end' id='end' value=''>";
-      echo "<input type='hidden' name='type' value='add' />";
-      echo "</form>";
-      echo "</div>";
+      echo "<div class='form-group'>\n";
+      echo "<form method='post' action='basket_update.php'>\n";
+      echo "Make: ".$make[$i]."<br> Model: ".$model[$i]."<br>\n";
+      echo "Category: ".$category[$i]."<br>\n";
+      echo "Description: ".$desc[$i]."<br>\n";
+      echo "<button class='btn btn-primary btn-sml'>Add to basket</button>\n";
+      echo "<input type='hidden' name='barcode' value='".$barcode[$i]."' />\n";
+      echo "<input type='hidden' name='url' value='".$current_url."' />\n";
+      echo "<input type='hidden' name='start' id='start' value=''>\n";
+      echo "<input type='hidden' name='end' id='end' value=''>\n";
+      echo "<input type='hidden' name='type' value='add' />\n";
+      echo "</form>\n";
+      echo "</div>\n";
       $i++;
     }
   }
@@ -143,12 +155,11 @@ elseif($barcode!=""){
 ?>
 </div>
 </div>
-<div class="container">
   <div id="shopping-basket" data-spy="affix" class="navbar">
     <h3>Your Basket</h3>
     <?php
     if(isset($_SESSION['products'])){
-      $total =0;
+      $total=0;
       echo '<ol>';
       foreach($_SESSION['products'] as $item){
         echo '<li class=cart-item>';

@@ -1,4 +1,4 @@
-<?
+<?php
 session_start();
 require_once('connect.php');
 
@@ -55,6 +55,9 @@ if(isset($_POST["type"]) && $_POST["type"] == "add"){
       $_SESSION["products"]=$new_item;
       //If this is a new session or no items in basket, create the session
     }
+  }
+  else {
+    echo "Error: ".$conn->error;
   }
   header('Location: '.$return_url);
 }
