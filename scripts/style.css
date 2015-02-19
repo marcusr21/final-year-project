@@ -17,3 +17,43 @@ buttons.error {
 .errorMessage{
   color: #FF0000;
 }
+
+#resultFilter.affix {
+  position: fixed;
+  width: 20%;
+  top: 40%;
+}
+
+#resultFilter {
+  width: 20%;
+}
+
+#results {
+  width: 70%;
+  padding-left: 24%;
+}
+
+#filterWrapper {
+  width: 21%;
+  position: fixed;
+}
+
+@media (min-width: 60%) {
+  #resultFilter.affix-top {
+    position: static;
+    margin-top:3%;
+    width:10%;
+  }
+}
+
+#shoppingBasket.affix {
+  position: fixed;
+  float: right;
+  width: 20%;
+  top:10%;
+}
+
+#shoppingBasket.affix-top {
+  position: static;
+
+}

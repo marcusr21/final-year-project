@@ -1,6 +1,7 @@
 <?php
 session_start();
 $search=$_REQUEST['q'];
+$barcode=$_REQUEST['id'];
 $first=$_SESSION['first'];
 ?>
 <?php
@@ -8,10 +9,23 @@ $current_url = $_SERVER['REQUEST_URI'];
 $i=0;
 include('header.php');
 include('connect.php');
+echo "<div class='container'>";
 echo "Welcome back ".$first;
+echo "</div>";
 ?>
 <script>
   $(document).ready(function(){
+
+    $('#resultFilter').affix({
+      offset: { top: $('#results').offset().top }
+    });
+
+    $('#shopping-basket').affix({
+      offset: {
+        top: $('.container').offset().top
+      }
+    });
+
     $('#startDate').datepicker({
       defaultDate: "+1w",
       numberOfMonths: 1,
@@ -53,44 +67,39 @@ echo "Welcome back ".$first;
         });
       }
     });
-
-    $('#resultFilter').affix({
-      offset: {
-        top: 100,
-        bottom: 100
-      }
-    });
 });
 </script>
 <div class="container">
-  <div class="data">
+  <div id="filter-wrapper">
+    <div id="resultFilter" data-spy="affix" class="navbar">
+      Start Date: <input type="text" id="startDate">
+      End Date: <input type="text" id="endDate">
+      <?php
+      
+      ?>
+    </div>
   </div>
-  <div class="resultFilter">
-    Start Date: <input type="text" id="startDate">
-    End Date: <input type="text" id="endDate">
-  </div>
-</div>
 
-<div class="container">
+  <div id="results">
 <?php
-if($search==""){
+if($search=="" && $barcode ==""){
   $searchQuery="SELECT barcode, make, model, tags, category.category, description FROM assets INNER JOIN category
   ON assets.category=category.id";
   if($result=mysqli_query($conn,$searchQuery))
   {
     while($row=mysqli_fetch_row($result)){
-      $barcode[i]=$row[0];
-      $make[i] = $row[1];
-      $model[i]=$row[2];
-      $category[i]=$row[4];
-      $desc[i]=$row[5];
-      echo "<div class='container'>";
+      $barcode[$i]=$row[0];
+      $make[$i] = $row[1];
+      $model[$i]=$row[2];
+      $category[$i]=$row[4];
+      $desc[$i]=$row[5];
+      echo "<div class='form-group'>";
       echo "<form method='post' action='basket_update.php'>";
-      echo "Make: ".$make[i]."<br> Model: ".$model[i]."<br>";
-      echo "Category: ".$category[i]."<br>";
-      echo "Description: ".$desc[i]."<br>";
+      echo "Make: ".$make[$i]."<br> Model: ".$model[$i]."<br>";
+      echo "Category: ".$category[$i]."<br>";
+      echo "Description: ".$desc[$i]."<br>";
       echo "<button class='btn btn-primary btn-sml'>Add to basket</button>";
-      echo "<input type='hidden' name='barcode' value='".$barcode[i]."' />";
+      echo "<input type='hidden' name='barcode' value='".$barcode[$i]."' />";
       echo "<input type='hidden' name='url' value='".$current_url."' />";
       echo "<input type='hidden' name='start' id='start' value=''>";
       echo "<input type='hidden' name='end' id='end' value=''>";
@@ -100,14 +109,42 @@ if($search==""){
       $i++;
     }
   }
-  else {
-
+  else{
+  }
+}
+elseif($barcode!=""){
+  $searchQuery="SELECT barcode, make, model, tags, category.category, description FROM assets INNER JOIN category
+  ON assets.category=category.id WHERE barcode='$barcode'";
+  if($result=mysqli_query($conn,$searchQuery))
+  {
+    while($row=mysqli_fetch_row($result)){
+      $barcode[$i]=$row[0];
+      $make[$i] = $row[1];
+      $model[$i]=$row[2];
+      $category[$i]=$row[4];
+      $desc[$i]=$row[5];
+      echo "<div class='form-group'>";
+      echo "<form method='post' action='basket_update.php'>";
+      echo "Make: ".$make[$i]."<br> Model: ".$model[$i]."<br>";
+      echo "Category: ".$category[$i]."<br>";
+      echo "Description: ".$desc[$i]."<br>";
+      echo "<button class='btn btn-primary btn-sml'>Add to basket</button>";
+      echo "<input type='hidden' name='barcode' value='".$barcode[$i]."' />";
+      echo "<input type='hidden' name='url' value='".$current_url."' />";
+      echo "<input type='hidden' name='start' id='start' value=''>";
+      echo "<input type='hidden' name='end' id='end' value=''>";
+      echo "<input type='hidden' name='type' value='add' />";
+      echo "</form>";
+      echo "</div>";
+      $i++;
+    }
   }
 }
 ?>
 </div>
+</div>
 <div class="container">
-  <div class="shopping-basket">
+  <div id="shopping-basket" data-spy="affix" class="navbar">
     <h3>Your Basket</h3>
     <?php
     if(isset($_SESSION['products'])){

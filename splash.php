@@ -11,11 +11,17 @@ echo "Welcome back ".$_SESSION["first"]."<br>";
 ?>
 <script>
   $(document).ready(function(){
-    $('input.typeahead').typeahead({
-      name: 'search',
-      remote: 'search.php?q=%QUERY',
-      limit: 10
-    });
+    $('#search').on('input', function() {
+          var searchKeyword = $(this).val();
+          if (searchKeyword.length >= 3) {
+            $.post('search.php', { keywords: searchKeyword }, function(data) {
+              $('ul#content').empty()
+              $.each(data, function() {
+                $('ul#content').append('<li><a href="results.php?id=' + this.id + '">' + this.make + ' ' + this.model + '</a></li>');
+              });
+            }, "json");
+          }
+        });
   });
 </script>
 <div id="manageBooking">
@@ -24,7 +30,12 @@ echo "Welcome back ".$_SESSION["first"]."<br>";
 <div id="editAccount">
   <a href="account.php">Edit your Account</a>
 </div>
-    <input type="text" name="search" id="search" class="typeahead tt-query" placeholder="Search">
+<div id='searchDiv'>
+  <form action='results.php' method='POST'>
+    <input type="text" id="search" placeholder="Search">
+  </form>
+  <ul id='content'></ul>
+</div>
 <div id="myBookings">
   <h3>View your current bookings</h3>
   <?php
@@ -50,9 +61,6 @@ echo "Welcome back ".$_SESSION["first"]."<br>";
   else {
     echo "Error ". $conn->error;
   }
-  /*If username matches and loan is still outstanding
-  then return the information here with all relevant information
-  SQL check username & actualreturn = blank*/
   ?>
 </div>
 
