@@ -20,7 +20,7 @@
   date_default_timezone_set('UTC');
   ?>
   <div class="container">
-    <h1>NSU:Media</h1>
+    <h1>NSU/Media</h1>
     <h2>At Northumbria Students Union</h2>
   </div>
 </body>
