@@ -18,7 +18,7 @@ if(isset($_POST['type']) && $_POST['type']=='edit'){
   WHERE barcode='$barcode'";
   if(mysqli_query($conn, $sql) === TRUE){
     //$array=array('result'=>'Asset updated');
-    header('Location: manageAsset.php?type=edit&id='.$barcode);
+    header('Location: manageAsset.php?type=edited&id='.$barcode);
   }
   else{
     //$array=array('result'=>'Update Failed');
@@ -27,10 +27,18 @@ if(isset($_POST['type']) && $_POST['type']=='edit'){
   //echo json_encode($array);
 }
 elseif(isset($_POST['type']) && $_POST['type']=='add'){
-  //do add here
+  $sql="INSERT INTO assets
+  "
 }
 elseif(isset($_POST['type']) && $_POST['type']=='delete'){
-  //do delete here
+  $sql="DELETE FROM assets
+  WHERE barcode='$barcode'";
+  if(mysqli_query($conn, $sql) === TRUE){
+    header('Location: manageAsset.php?type=deleted&id='.$barcode);
+  }
+  else{
+    echo "Error ".$conn->error;
+  }
   //transfer to recently deleted table
 }
 ?>

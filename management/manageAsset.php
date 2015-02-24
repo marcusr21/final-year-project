@@ -32,6 +32,38 @@ $(document).ready(function(){
     }, "json");
   });
 
+  $('#deleteSearch').on('input', function(){
+    $('#deleteContent').show();
+    var searchKeyword= $(this).val();
+    $.post('/../search.php', {keywords: searchKeyword}, function(data) {
+      $('#deleteContent').empty();
+      $.each(data, function(){
+        $('#deleteContent').append('<a href="#" class="link" data-linkid="'+this.id+'">'+this.make+' '+this.model+'</a><br/>');
+      });
+    }, "json");
+  });
+
+  $(document).on("click", "a", function(){
+    var elem=$(this);
+    var data='barcode='+elem.attr('data-linkid');
+    //alert('testing '+data);
+    $.ajax({
+      type: "POST",
+      url: 'findAsset.php',
+      data: 'barcode='+elem.attr('data-linkid'),
+      dataType: 'json',
+      success: function(data) {
+        $('#deleteForm').html(
+          'Make <input type="text" id="make" name="make" value="'+data["make"]+'"><br/>Model: <input type="text" name="model" id="model" value="'+data["model"]+'"><br/> Description: <input type="textarea" name="desc" value="'+data["description"]+'"><br/>Tags: <input type="text" id="tags" name="tags" value="'+data["tags"]+'"><br/> Category: <input type="text" id="category" name="category" value="'+data["category"]+'"><input type="hidden" id="barcode" name="barcode" value="'+data["barcode"]+'">'
+        );
+        $('#deleteSubmit').css('visibility', 'visible');
+        $('#deleteContent').hide();
+        $('.searchBox').hide();
+      }
+    });
+  });
+
+
     $(document).on("click", "a", function(){
       var elem=$(this);
       var data='barcode='+elem.attr('data-linkid');
@@ -59,9 +91,17 @@ $(document).ready(function(){
     $('#editSearchAgain').click(function(event){
       event.preventDefault();
       event.unbind();
-      $('.searchBox').show();
+      $('.editSearchBox').show();
       $('.editForm').hide();
       $('#editSubmit').css('visibility', 'hidden');
+    });
+
+    $('#deleteSearchAgain').click(function(event){
+      event.preventDefault();
+      event.unbind();
+      $('.deleteSearchBox').show();
+      $('.deleteForm').hide();
+      $('#deleteSubmit').css('visibility', 'hidden');
     });
 
     /*$('#edit').submit(function(event){
@@ -93,7 +133,7 @@ $(document).ready(function(){
     </select>
   </form>
 
-  <form id='add' name='add' method='POST' action='update.php' style='display:none'>
+  <form id='add' name='add' method='POST' action='updateAsset.php' style='display:none'>
     Asset Number: <input type='text' id='addBarcode' />
     Make: <input type='text' id='make' />
     Model: <input type='text' id='model' />
@@ -115,10 +155,10 @@ $(document).ready(function(){
   </form>
 
   <form id='edit' name='edit' method='POST' action='updateAsset.php' style='display:none'>
-    <div class='searchBox'>
+    <button id='editSearchAgain'>Search Again</button>
+    <div id='editSearchBox'>
       Search for Asset: <input type='text' id='editSearch' />
     </div>
-    <button id='editSearchAgain'>Search Again</button>
     <div id='content'>
     </div>
     <div class='editForm'>
@@ -127,9 +167,17 @@ $(document).ready(function(){
     <input type='submit' class='btn btn-primary btn-sml' id='editSubmit' value='Edit Asset' style='visibility:hidden' />
   </form>
 
-  <form id='delete' name='delete' method='POST' action='update.php' style='display:none'>
-    Asset Number: <input type='text' id='deleteBarcode' />
-    <!-- AJAX to lookup asset to be deleted-->
+  <form id='delete' name='delete' method='POST' action='updateAsset.php' style='display:none'>
+    <button id='deleteSearchAgain'>Search Aagin</button>
+    <div id='deleteSearchBox'>
+      Search for Asset: <input type='text' id='deleteSearch' />
+    </div>
+    <div id='deleteContent'>
+    </div>
+    <div id='deleteForm'>
+    </div>
+    <input type='hidden' id='type' name='type' value='delete' /?>
+    <input type='submit' class='btn btn-primary btn-sml' id='deleteSubmit' value='Delete Asset' style='visibility:hidden' />
   </form>
 </div>
 <?php
