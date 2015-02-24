@@ -11,11 +11,12 @@ include($headerPath);
 ?>
 <script>
 $(document).ready(function(){
+
   $("#formSelect").on("change", function() {
       $("#" + $(this).val()).show().siblings().hide();
   })
 
-  $('#editBarcode').on('input', function(){
+  $('#editSearch').on('input', function(){
     var searchKeyword= $(this).val();
     $.post('/../search.php', {keywords: searchKeyword}, function(data) {
       $('#content').empty();
@@ -36,9 +37,10 @@ $(document).ready(function(){
         dataType: 'json',
         success: function(data) {
           $('.editForm').html(
-            'Make <input type="text" id="editModel" value="'+data["make"]+'"><br/>Model: <input type="text" id="editModel" value="'+data["model"]+'"><br/> Description: <input type="textarea" value="'+data["description"]+'"><br/>Tags: <input type="text" id="editTags" value="'+data["tags"]+'"><br/> Category: <input type="text" id="editCategory" value="'+data["category"]+'">'
+            'Make <input type="text" id="editModel" value="'+data["make"]+'"><br/>Model: <input type="text" id="editModel" value="'+data["model"]+'"><br/> Description: <input type="textarea" value="'+data["description"]+'"><br/>Tags: <input type="text" id="editTags" value="'+data["tags"]+'"><br/> Category: <input type="text" id="editCategory" value="'+data["category"]+'"><input type="hidden" value="'+data["barcode"]+'">'
           );
-          console.log(data);
+          $('#editSubmit').css('visibility', 'visible');
+          $('#content').hide();
         }
       });
     });
@@ -75,16 +77,21 @@ $(document).ready(function(){
       mysqli_free_result($results);
       ?>
     </select>
-
+    <input type='hidden' value='add' id='type' />
+    <input type='submit' value='Add Asset' class='btn btn-primary btn-sml' />
   </form>
+
   <form id='edit' name='edit' method='POST' action='update.php' style='display:none'>
-    Asset Number: <input type='text' id='editBarcode' />
+    Search for Asset: <input type='text' id='editSearch' />
     <div id='content'>
     </div>
     <div class='editForm'>
     </div>
     <!-- AJAX to lokup asset to be edited-->
+    <input type='hidden' id='type' value='edit' />
+    <input type='submit' class='btn btn-primary btn-sml' id='editSubmit' value='Edit Asset' style='visibility:hidden' />
   </form>
+
   <form id='delete' name='delete' method='POST' action='update.php' style='display:none'>
     Asset Number: <input type='text' id='deleteBarcode' />
     <!-- AJAX to lookup asset to be deleted-->
