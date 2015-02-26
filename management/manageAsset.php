@@ -177,7 +177,7 @@ $(document).ready(function(){
     <div id='deleteForm'>
     </div>
     <input type='hidden' id='type' name='type' value='delete' /?>
-    <input type='submit' class='btn btn-primary btn-sml' id='deleteSubmit' value='Delete Asset' style='visibility:hidden' />
+    <input type='submit' class='btn btn-danger btn-sml' id='deleteSubmit' value='Delete Asset' style='visibility:hidden' />
   </form>
 </div>
 <?php
