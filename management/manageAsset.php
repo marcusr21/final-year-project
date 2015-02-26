@@ -134,12 +134,12 @@ $(document).ready(function(){
   </form>
 
   <form id='add' name='add' method='POST' action='updateAsset.php' style='display:none'>
-    Asset Number: <input type='text' id='addBarcode' />
-    Make: <input type='text' id='make' />
-    Model: <input type='text' id='model' />
-    Description: <input type='textarea' />
-    Tags: <input type='text' id='tags' />
-    Category: <select id='category'>
+    Asset Number: <input type='text' id='barcode' name='barcode' />
+    Make: <input type='text' id='make' name='make' />
+    Model: <input type='text' id='model' name='model' />
+    Description: <textarea rows='2' cols='40' name='description' id='description'></textarea>
+    Tags: <input type='text' id='tags' name='tags' />
+    Category: <select id='cat' name='cat'>
       <option value='' selected='selected'></option>
       <?php
       $sql="SELECT * FROM category";
@@ -150,7 +150,7 @@ $(document).ready(function(){
       mysqli_free_result($results);
       ?>
     </select>
-    <input type='hidden' value='add' id='type' />
+    <input type='hidden' value='add' id='type' name='type' />
     <input type='submit' value='Add Asset' class='btn btn-primary btn-sml' />
   </form>
 
