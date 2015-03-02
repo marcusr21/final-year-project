@@ -10,15 +10,36 @@ include($connectPath);
 include($headerPath);
 
 if(isset($_REQUEST['type'])){
-  echo $_REQUEST['id']." has been ".$_REQUEST['type'];
+  if($_REQUEST['type']=='email'){
+    echo "Error, email already exists"
+  }
+  else{
+    echo "User has been ".$_REQUEST['type'];
+  }
 }
 ?>
 <script>
 $(document).ready(function(){
-  $("#formSelect").on("change", function() {
-      $("#" + $(this).val()).show().siblings().hide();
-      $('#formShow').show();
-  })
+
+  $('#addUser').click(function() {
+    $('#add').show();
+    $('#edit').hide();
+    $('#delete').hide();
+  });
+
+  $('#editUser').click(function(){
+    $('#edit').show();
+    $('#editSearchDiv').show();
+    $('#delete').hide();
+    $('#add').hide();
+  });
+
+  $('#deleteUser').click(function(){
+    $('#delete').show();
+    $('#deleteSearchDiv').show();
+    $('#add').hide();
+    $('#edit').hide();
+  });
 
   $('#editSearch').on('input', function(){
     $('#editContent').show();
@@ -31,7 +52,18 @@ $(document).ready(function(){
     }, "json");
   });
 
-  $(document).on("click", "a", function(){
+  $('#deleteSearch').on('input', function(){
+    $('#deleteContent').show();
+    var searchKeyword= $(this).val();
+    $.post('searchUser.php', {keywords: searchKeyword}, function(data) {
+      $('#deleteContent').empty();
+      $.each(data, function(){
+        $('#deleteContent').append('<a href="#" class="link" data-linkid="'+this.uid+'">'+this.firstname+' '+this.surname+'</a><br/>');
+      });
+    }, "json");
+  });
+
+  $(document).on("click", ".link", function(){
     var elem=$(this);
     //var data='barcode='+elem.attr('data-linkid');
     //alert('testing '+data);
@@ -51,20 +83,41 @@ $(document).ready(function(){
     });
   });
 
-  $(document).ready(function(){
-    $("a").trigger("click");
+  $(document).on("click", ".link", function(){
+    var elem=$(this);
+    //var data='barcode='+elem.attr('data-linkid');
+    //alert('testing '+data);
+    $.ajax({
+      type: "POST",
+      url: 'findUser.php',
+      data: 'uid='+elem.attr('data-linkid'),
+      dataType: 'json',
+      success: function(data) {
+        $('#deleteForm').html(
+          'Firstname: <input type="text" name="first" value="'+data['first']+'" /><br/>Surname: <input type="text" name="surname" value="'+data['surname']+'" /><br/>Email: <input type="text" name="email" value="'+data['email']+'" /><br/> Access: <input type="text" name="acess" value="'+data['access']+'" /><input type="hidden" name="uid" value="'+data['uid']+'" />'
+        );
+        $('#deleteSubmit').css('visibility', 'visible');
+        $('#deleteContent').hide();
+        $('#deleteSearchDiv').hide();
+      }
+    });
   });
+
+  /*$(document).ready(function(){
+    $("a").trigger("click");
+  });*/
 })
 </script>
 <div class='container'>
-  <form id='formShow'>
-    <select id='formSelect'>
-      <option value='' selected='selected'></option>
-      <option value='add'>Add a User</option>
-      <option value='edit'>Edit a User</option>
-      <option value='delete'>Delete a User</option>
-    </select>
-  </form>
+  <div class='option'>
+    <h3><a href='#' id='addUser'>Add User</a></h3>
+  </div>
+  <div class='option'>
+    <h3><a href='#' id='editUser'>Edit User</a></h3>
+  </div>
+  <div class='option'>
+    <h3><a href='#' id='deleteUser'>Delete User</a></h3>
+  </div>
 
   <form id='add' name='add' action='updateUser.php' method='POST' style='display:none'>
     <label for='firstname'>Firstname</label> <input type='text' name='first' />
@@ -84,7 +137,7 @@ $(document).ready(function(){
   </form>
 
   <form id='edit' name='edit' action='updateUser.php' method='POST' style='display:none'>
-    <div id='editSearchDiv'>
+    <div id='editSearchDiv' style='display:none'>
       <label for='searchEdit'>Search for User</label><input type='text' id='editSearch' />
     </div>
     <div id='editContent'>
@@ -92,9 +145,18 @@ $(document).ready(function(){
     <div id='editForm'>
     </div>
     <input type='hidden' value='edit' name='type' />
-    <input type='submit' id='editSubmit' value='Edit User' class='btn btn-primary btn-sml' />
+    <input type='submit' id='editSubmit' value='Edit User' style='visibility:hidden' class='btn btn-primary btn-sml' />
   </form>
 
   <form id='delete' name='delete' action='updateUser.php' method='POST'>
+    <div id='deleteSearchDiv' style='display:none'>
+      <label for='searchDelete'>Search for User</label><input type='text' id='deleteSearch' />
+    </div>
+    <div id='deleteContent'>
+    </div>
+    <div id='deleteForm'>
+    </div>
+    <input type='hidden' value='delete' name='type' />
+    <input type='submit' id='deleteSubmit' value='Delete User' style='visibility:hidden' class='btn btn-danger btn-sml' />
   </form>
 </div>

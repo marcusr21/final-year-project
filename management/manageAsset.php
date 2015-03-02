@@ -15,11 +15,25 @@ if(isset($_REQUEST['type'])){
 ?>
 <script>
 $(document).ready(function(){
+  $('#addAsset').click(function() {
+    $('#add').show();
+    $('#edit').hide();
+    $('#delete').hide();
+  });
 
-  $("#formSelect").on("change", function() {
-      $("#" + $(this).val()).show().siblings().hide();
-      $('#formShow').show();
-  })
+  $('#editAsset').click(function(){
+    $('#edit').show();
+    $('#editSearchDiv').show();
+    $('#delete').hide();
+    $('#add').hide();
+  });
+
+  $('#deleteAsset').click(function(){
+    $('#delete').show();
+    $('#deleteSearchDiv').show();
+    $('#add').hide();
+    $('#edit').hide();
+  });
 
   $('#editSearch').on('input', function(){
     $('#content').show();
@@ -43,7 +57,7 @@ $(document).ready(function(){
     }, "json");
   });
 
-  $(document).on("click", "a", function(){
+  $(document).on("click", ".link", function(){
     var elem=$(this);
     var data='barcode='+elem.attr('data-linkid');
     //alert('testing '+data);
@@ -64,7 +78,7 @@ $(document).ready(function(){
   });
 
 
-    $(document).on("click", "a", function(){
+    $(document).on("click", ".link", function(){
       var elem=$(this);
       var data='barcode='+elem.attr('data-linkid');
       //alert('testing '+data);
@@ -82,10 +96,6 @@ $(document).ready(function(){
           $('.searchBox').hide();
         }
       });
-    });
-
-    $(document).ready(function(){
-      $("a").trigger("click");
     });
 
     $('#editSearchAgain').click(function(event){
@@ -124,14 +134,15 @@ $(document).ready(function(){
 });
 </script>
 <div class='container'>
-  <form id='formShow'>
-    <select id='formSelect'>
-      <option value='' selected='selected'></option>
-      <option value='add'>Add an asset</option>
-      <option value='edit'>Edit an asset</option>
-      <option value='delete'>Delete an asset</option>
-    </select>
-  </form>
+  <div class='option'>
+    <h3><a href='#' id='addAsset'>Add User</a></h3>
+  </div>
+  <div class='option'>
+    <h3><a href='#' id='editAsset'>Edit User</a></h3>
+  </div>
+  <div class='option'>
+    <h3><a href='#' id='deleteAsset'>Delete User</a></h3>
+  </div>
 
   <form id='add' name='add' method='POST' action='updateAsset.php' style='display:none'>
     Asset Number: <input type='text' id='barcode' name='barcode' />
