@@ -10,7 +10,7 @@ $first=$_POST['first'];
 $surname=$_POST['surname'];
 $email=$_POST['email'];
 $access=$_POST['access'];
-$pass=$_POST['password']
+$pass=$_POST['password'];
 
 if(isset($_POST['type']) && $_POST['type']=='add'){
   $selectQuery="SELECT * FROM user WHERE email='$email' LIMIT 1";
@@ -39,7 +39,7 @@ elseif(isset($_POST['type']) && $_POST['type']=='edit'){
   }
 }
 elseif(isset($_POST['type']) && $_POST['type']=='delete'){
-  $sql="DELETE FROM assets
+  $sql="DELETE FROM user
   WHERE uid='$uid'";
   if(mysqli_query($conn, $sql)===TRUE){
     header('Location: manageUser.php?type=deleted');

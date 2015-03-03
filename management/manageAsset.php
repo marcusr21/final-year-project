@@ -70,7 +70,7 @@ $(document).ready(function(){
         $('#deleteForm').html(
           'Make <input type="text" id="make" name="make" value="'+data["make"]+'"><br/>Model: <input type="text" name="model" id="model" value="'+data["model"]+'"><br/> Description: <input type="textarea" name="desc" value="'+data["description"]+'"><br/>Tags: <input type="text" id="tags" name="tags" value="'+data["tags"]+'"><br/> Category: <input type="text" id="category" name="category" value="'+data["category"]+'"><input type="hidden" id="barcode" name="barcode" value="'+data["barcode"]+'">'
         );
-        $('#deleteSubmit').css('visibility', 'visible');
+        $('#deleteModal').css('visibility', 'visible');
         $('#deleteContent').hide();
         $('.searchBox').hide();
       }
@@ -113,6 +113,12 @@ $(document).ready(function(){
       $('.deleteForm').hide();
       $('#deleteSubmit').css('visibility', 'hidden');
     });
+
+    $('#deleteModal').click(function(){
+      $('#deleteConfirm').show();
+      $('#deleteSubmit').show();
+      $('#deleteClose').show();
+    })
 
     /*$('#edit').submit(function(event){
 
@@ -179,7 +185,7 @@ $(document).ready(function(){
   </form>
 
   <form id='delete' name='delete' method='POST' action='updateAsset.php' style='display:none'>
-    <button id='deleteSearchAgain'>Search Aagin</button>
+    <button id='deleteSearchAgain'>Search Again</button>
     <div id='deleteSearchBox'>
       Search for Asset: <input type='text' id='deleteSearch' />
     </div>
@@ -188,7 +194,24 @@ $(document).ready(function(){
     <div id='deleteForm'>
     </div>
     <input type='hidden' id='type' name='type' value='delete' /?>
-    <input type='submit' class='btn btn-danger btn-sml' id='deleteSubmit' value='Delete Asset' style='visibility:hidden' />
+    <button type='button' class='btn btn-danger btn-sml' data-toggle='modal' data-target='#deleteConfirm' id='deleteModal' style='visibility:hidden'>Delete Asset</button>
+    <div class='modal fade' id='deleteConfirm' tabindex='-1' role='dialog' aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class='modal-dialog'>
+        <div class='modal-content'>
+          <div class='modal-header'>
+          <h4 class='modal-title'>Confirm Delete</h4>
+        </div>
+        <div class='modal-body'>
+          <p>Are you sure that you would like to delete this asset?</p>
+          <p>This asset will not exist in the records</p>
+        </div>
+        <div class='modal-footer'>
+          <button type='button' class='btn btn-default' id='deleteClose' data-dismiss='modal' style='display:none'>Close</button>
+          <input type='submit' value='Delete Asset' id='deleteSubmit' class='btn btn-danger' style='display:none' />
+        </div>
+      </div>
+    </div>
+  </div>
   </form>
 </div>
 <?php

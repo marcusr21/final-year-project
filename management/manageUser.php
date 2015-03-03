@@ -11,7 +11,7 @@ include($headerPath);
 
 if(isset($_REQUEST['type'])){
   if($_REQUEST['type']=='email'){
-    echo "Error, email already exists"
+    echo "Error, email already exists";
   }
   else{
     echo "User has been ".$_REQUEST['type'];
@@ -96,12 +96,18 @@ $(document).ready(function(){
         $('#deleteForm').html(
           'Firstname: <input type="text" name="first" value="'+data['first']+'" /><br/>Surname: <input type="text" name="surname" value="'+data['surname']+'" /><br/>Email: <input type="text" name="email" value="'+data['email']+'" /><br/> Access: <input type="text" name="acess" value="'+data['access']+'" /><input type="hidden" name="uid" value="'+data['uid']+'" />'
         );
-        $('#deleteSubmit').css('visibility', 'visible');
+        $('#deleteModal').css('visibility', 'visible');
         $('#deleteContent').hide();
         $('#deleteSearchDiv').hide();
       }
     });
   });
+
+  $('#deleteModal').click(function(){
+    $('#deleteConfirm').show();
+    $('#deleteSubmit').show();
+    $('#deleteClose').show();
+  })
 
   /*$(document).ready(function(){
     $("a").trigger("click");
@@ -157,6 +163,21 @@ $(document).ready(function(){
     <div id='deleteForm'>
     </div>
     <input type='hidden' value='delete' name='type' />
-    <input type='submit' id='deleteSubmit' value='Delete User' style='visibility:hidden' class='btn btn-danger btn-sml' />
+    <button type='button' id='deleteModal' style='visibility:hidden' data-toggle='modal' data-target='#deleteConfirm' class='btn btn-danger btn-sml'>Delete User</button>
+    <div class='modal fade' id='deleteConfirm' tabindex='-1' role='dialog' aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class='modal-dialog'>
+        <div class='modal-content'>
+          <h4 class='modal-title'>Confirm Delete</h4>
+        <div class='modal-body'>
+          <p>Are you sure that you would like to delete this user?</p>
+          <p>This user will lose their access immediately</p>
+        </div>
+        <div class='modal-footer'>
+          <button type='button' class='btn btn-default' id='deleteClose' data-dismiss='modal' style='display:none'>Close</button>
+          <input type='submit' value='Delete User' id='deleteSubmit' class='btn btn-danger' style='display:none' />
+        </div>
+      </div>
+    </div>
+  </div>
   </form>
 </div>
