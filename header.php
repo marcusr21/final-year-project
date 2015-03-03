@@ -22,6 +22,7 @@
   <div class="container">
     <h1>NSU/Media</h1>
     <h2>At Northumbria Students Union</h2>
+    <a href='logout.php'>Log Out</a>
   </div>
 </body>
 </html>
