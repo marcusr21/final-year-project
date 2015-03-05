@@ -73,6 +73,7 @@ $(document).ready(function(){
         $('#deleteModal').css('visibility', 'visible');
         $('#deleteContent').hide();
         $('.searchBox').hide();
+        $('#allAssetContainer').hide();
       }
     });
   });
@@ -94,6 +95,27 @@ $(document).ready(function(){
           $('#editSubmit').css('visibility', 'visible');
           $('#content').hide();
           $('.searchBox').hide();
+          $('#allAssetContainer').hide();
+        }
+      });
+    });
+
+    $('#editButton').click(function(){
+      var elem=$(this);
+      $.ajax({
+        type: "POST",
+        url: "findAsset.php",
+        data: "barcode="+elem.attr('value'),
+        dataType: "json",
+        success: function(data) {
+          $('.editForm').html(
+            'Make <input type="text" id="make" name="make" value="'+data["make"]+'"><br/>Model: <input type="text" name="model" id="model" value="'+data["model"]+'"><br/> Description: <input type="textarea" name="desc" value="'+data["description"]+'"><br/>Tags: <input type="text" id="tags" name="tags" value="'+data["tags"]+'"><br/> Category: <input type="text" id="category" name="category" value="'+data["category"]+'"><input type="hidden" id="barcode" name="barcode" value="'+data["barcode"]+'">'
+          );
+          $('#editSubmit').css('visibility', 'visible');
+          $('#content').hide();
+          $('.searchBox').hide();
+          $('#allAssetContainer').hide();
+          $('#edit').show();
         }
       });
     });
@@ -141,15 +163,28 @@ $(document).ready(function(){
 </script>
 <div class='container'>
   <div class='option'>
-    <h3><a href='#' id='addAsset'>Add User</a></h3>
+    <h3><a href='#' id='addAsset'>Add Asset</a></h3>
   </div>
   <div class='option'>
-    <h3><a href='#' id='editAsset'>Edit User</a></h3>
+    <h3><a href='#' id='editAsset'>Edit Asset</a></h3>
   </div>
   <div class='option'>
-    <h3><a href='#' id='deleteAsset'>Delete User</a></h3>
+    <h3><a href='#' id='deleteAsset'>Delete Asset</a></h3>
   </div>
 
+  <div id='allAssetContainer'>
+    <?php
+    $sqlQuery="SELECT * FROM assets ORDER BY id";
+    if($results=mysqli_query($conn, $sqlQuery)){
+      while($row=mysqli_fetch_array($results)){
+        echo "Asset Number: <label for='barcode' id='labelBarcode'>".$row['id']."</label>\n<br/>";
+        echo "Make: ".$row['make']." ".$row['model']."<br/>\n";
+        echo "<button type='button' id='editButton' value='".$row['id']."' class='btn btn-primary btn-sml'>Edit Asset</button>\n";
+        echo "<button type='button' id='deleteButton' value='".$row['id']."' class='btn btn-danger btn-sml'> Delete Asset</button><br/>\n";
+      }
+    }
+    ?>
+  </div>
   <form id='add' name='add' method='POST' action='updateAsset.php' style='display:none'>
     Asset Number: <input type='text' id='barcode' name='barcode' />
     Make: <input type='text' id='make' name='make' />

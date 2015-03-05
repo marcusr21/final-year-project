@@ -19,8 +19,8 @@ $today=date('Y-m-d');
 
 if(isset($_POST['type']) && $_POST['type']=='edit'){
   $sql="UPDATE assets
-  SET barcode='$barcode', make='$make', model='$model', tags='$tags', description='$desc', category='$cat'
-  WHERE barcode='$barcode'";
+  SET id='$barcode', make='$make', model='$model', tags='$tags', description='$desc', category='$cat'
+  WHERE id='$barcode'";
   if(mysqli_query($conn, $sql) === TRUE){
     //$array=array('result'=>'Asset updated');
     header('Location: manageAsset.php?type=edited&id='.$barcode);
@@ -32,7 +32,7 @@ if(isset($_POST['type']) && $_POST['type']=='edit'){
   //echo json_encode($array);
 }
 elseif(isset($_POST['type']) && $_POST['type']=='add'){
-  $sql="INSERT INTO assets (barcode, make, model, description, category, status, createdate, tags)
+  $sql="INSERT INTO assets (id, make, model, description, category, status, createdate, tags)
   VALUES ($barcode, '$make', '$model', '$desc', '$categoryid', 'In Stock', '$today', '$tags')";
   if(mysqli_query($conn, $sql)===TRUE){
     header('Location: manageAsset.php?type=added&id='.$barcode);
@@ -43,7 +43,7 @@ elseif(isset($_POST['type']) && $_POST['type']=='add'){
 }
 elseif(isset($_POST['type']) && $_POST['type']=='delete'){
   $sql="DELETE FROM assets
-  WHERE barcode='$barcode'";
+  WHERE id='$barcode'";
   if(mysqli_query($conn, $sql) === TRUE){
     header('Location: manageAsset.php?type=deleted&id='.$barcode);
   }
