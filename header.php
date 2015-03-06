@@ -18,7 +18,7 @@
   <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.1/js/select2.min.js"></script>
   <script>
     $(document).ready(function(){
-      $('#search').on('input', function() {
+      $('#q').on('input', function() {
             var searchKeyword = $(this).val();
             if (searchKeyword.length >= 3) {
               $.post('../search.php', { keywords: searchKeyword }, function(data) {
@@ -70,7 +70,7 @@
     </nav>
     <form class="navbar-form navbar-right" role="search" method="POST" action="results.php">
       <div class="form-group">
-        <input type="text" class="form-control" id="search" placeholder="Search">
+        <input type="text" class="form-control" id="q" name="q" placeholder="Search">
         <div id="liveSearch"></div>
       </div>
       <button type="submit" class="btn btn-default">Submit</button>

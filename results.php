@@ -1,6 +1,6 @@
 <?php
 session_start();
-$search=$_REQUEST['q'];
+$search=$_POST['q'];
 $barcode=$_REQUEST['id'];
 $first=$_SESSION['first'];
 ?>
@@ -151,7 +151,6 @@ else{
 
   <div id="results">
 <?php
-var_dump($tags);
 if($search=="" && $barcode == ""){
   for($count=0; $count < count($barcodeArray); $count++){
       echo "<div class='form-group'>\n";
@@ -196,6 +195,33 @@ elseif($barcode!=""){
       echo "</div>\n";
       $i++;
     }
+  }
+}
+if($search!=""){
+  $selectResults="SELECT assets.id, make, model, category.category, description, MATCH (make, model, description, tags) AGAINST ('*$search*' IN BOOLEAN MODE) as relevant
+  FROM assets INNER JOIN category
+  ON assets.category=category.id
+  WHERE MATCH (make, model, description, tags) AGAINST ('*$search*' IN BOOLEAN MODE)
+  ORDER BY relevant DESC";
+  if($results=mysqli_query($conn, $selectResults)){
+    while($row=mysqli_fetch_array($results)){
+      echo "<div class='form-group'>\n";
+      echo "<form method='post' action='basket_update.php'>\n";
+      echo "Make: ".$row['make']."<br> Model: ".$row['model']."<br>\n";
+      echo "Category: ".$row['category']."<br>\n";
+      echo "Description: ".$row['description']."<br>\n";
+      echo "<button class='btn btn-primary btn-sml'>Add to basket</button>\n";
+      echo "<input type='hidden' name='barcode' value='".$row['id']."' />\n";
+      echo "<input type='hidden' name='url' value='".$current_url."' />\n";
+      echo "<input type='hidden' name='start' id='start' value=''>\n";
+      echo "<input type='hidden' name='end' id='end' value=''>\n";
+      echo "<input type='hidden' name='type' value='add' />\n";
+      echo "</form>\n";
+      echo "</div>\n";
+    }
+  }
+  else{
+    echo "Error: ".$conn->error;
   }
 }
 ?>
