@@ -1,12 +1,13 @@
 <?php
 require_once('connect.php');
-  $array=array();
+    $array=array();
     $key=$_POST['keywords'];
-    $sql="SELECT * FROM assets WHERE description like '%$key%'";
+    $sql="SELECT * FROM assets
+    WHERE MATCH (make, model, description, tags) AGAINST ('*$key*' IN BOOLEAN MODE)";
     $query=mysqli_query($conn, $sql);
       while($row=mysqli_fetch_array($query))
       {
-        $array[] = array('id'=>$row['barcode'], 'make'=>$row['make'], 'model'=>$row['model']);
+        $array[] = array('id'=>$row['id'], 'make'=>$row['make'], 'model'=>$row['model']);
       }
 
     echo json_encode($array);

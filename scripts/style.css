@@ -18,6 +18,10 @@ buttons.error {
   color: #FF0000;
 }
 
+#filter-wrapper{
+  width: 40%;
+}
+
 #resultFilter.affix {
   position: fixed;
   width: 20%;
@@ -29,7 +33,7 @@ buttons.error {
 }
 
 #results {
-  width: 70%;
+  width: 80%;
   padding-left: 24%;
 }
 
@@ -46,16 +50,10 @@ buttons.error {
   }
 }
 
-#shoppingBasket.affix {
-  position: fixed;
-  float: right;
+.shoppingBasket {
   width: 20%;
-  top:10%;
-}
-
-#shoppingBasket.affix-top {
-  position: static;
-
+  float: right;
+  position: relative;
 }
 
 .option {

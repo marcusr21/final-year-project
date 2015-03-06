@@ -15,7 +15,7 @@ if(isset($_POST["type"]) && $_POST["type"] == "add"){
   $start=$_POST['start'];
   $end=$_POST['end'];
 
-  $query = "SELECT make, model FROM assets where barcode = '$barcode' LIMIT 1";
+  $query = "SELECT make, model FROM assets where id = '$barcode' LIMIT 1";
   if($result=mysqli_query($conn, $query)) {
     while($row=mysqli_fetch_array($result))
     {
