@@ -26,9 +26,6 @@ if($search=="" && $barcode ==""){
     }
   }
 }
-else{
-  echo "Error: ".$conn->error;
-}
 ?>
 <script>
   $(document).ready(function(){
@@ -91,39 +88,6 @@ else{
 });
 </script>
 <div class="container">
-  <div id="filter-wrapper">
-    <div id="resultFilter" data-spy="affix" class="navbar">
-      Start Date: <input type="text" id="startDate">
-      End Date: <input type="text" id="endDate">
-      <form id='filters' name='filters'>
-        <?php
-        //get all possible filter info from previous functions
-        $uniqueCategory=array_unique($category);
-        //$tagsExplode=explode(" , ", $tags);
-        //$uniqueTags=array_unique($tags);
-        $keys = array_keys($tags);
-        for($count=0; $count < count($tags[$keys[0]]); $count++){
-          $data=array();
-          foreach($tags as $key => $value){
-            $data[$key] = $value[$count];
-          }
-        }
-        $uniqueTags=array_unique($data);
-        foreach($uniqueCategory as $cat){
-          echo "<input type='radio' name='category' value='".$cat."'>".$cat."</br>\n";
-        }
-        echo "Tags <select id='tags' multiple>\n";
-        echo "<option></option>";
-        foreach($uniqueTags as $tag){
-          echo "<option value='".$tag."'>".$tag."</option>\n";
-        }
-        echo "</select><br/>\n";
-        echo "<input type='submit' value='Search!' class='btn btn-primary btn-sml'>";
-        ?>
-      </form>
-    </div>
-  </div>
-
   <div class="shoppingBasket">
     <h3>Your Basket</h3>
     <?php
@@ -204,7 +168,10 @@ if($search!=""){
   WHERE MATCH (make, model, description, tags) AGAINST ('*$search*' IN BOOLEAN MODE)
   ORDER BY relevant DESC";
   if($results=mysqli_query($conn, $selectResults)){
+    $i=0;
     while($row=mysqli_fetch_array($results)){
+      $category[$i]=$row['category'];
+      $tags[$i]=explode(", ", $row['tags']);
       echo "<div class='form-group'>\n";
       echo "<form method='post' action='basket_update.php'>\n";
       echo "Make: ".$row['make']."<br> Model: ".$row['model']."<br>\n";
@@ -218,6 +185,7 @@ if($search!=""){
       echo "<input type='hidden' name='type' value='add' />\n";
       echo "</form>\n";
       echo "</div>\n";
+      $i++;
     }
   }
   else{
@@ -225,6 +193,38 @@ if($search!=""){
   }
 }
 ?>
+</div>
+<div id="filter-wrapper">
+  <div id="resultFilter" data-spy="affix" class="navbar">
+    Start Date: <input type="text" id="startDate">
+    End Date: <input type="text" id="endDate">
+    <form id='filters' name='filters'>
+      <?php
+      //get all possible filter info from previous functions
+      $uniqueCategory=array_unique($category);
+      //$tagsExplode=explode(" , ", $tags);
+      //$uniqueTags=array_unique($tags);
+      $keys = array_keys($tags);
+      for($count=0; $count < count($tags[$keys[0]]); $count++){
+        $data=array();
+        foreach($tags as $key => $value){
+          $data[$key] = $value[$count];
+        }
+      }
+      $uniqueTags=array_unique($data);
+      foreach($uniqueCategory as $cat){
+        echo "<input type='radio' name='category' value='".$cat."'>".$cat."</br>\n";
+      }
+      echo "Tags <select id='tags' multiple>\n";
+      echo "<option></option>";
+      foreach($uniqueTags as $tag){
+        echo "<option value='".$tag."'>".$tag."</option>\n";
+      }
+      echo "</select><br/>\n";
+      echo "<input type='submit' value='Search!' class='btn btn-primary btn-sml'>";
+      ?>
+    </form>
+  </div>
 </div>
 
 </div>
