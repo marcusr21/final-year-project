@@ -1,6 +1,6 @@
 <?php
+include('connect.php');
 session_start();
-$conn = mysqli_connect("localhost", "root", "toor", "nsumedia2");
 
 $user = $_REQUEST['username'];
 $password = $_REQUEST['password'];

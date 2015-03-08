@@ -1,6 +1,6 @@
 <?php
 session_start();
-$search=$_POST['q'];
+$search=$_GET['q'];
 $barcode=$_REQUEST['id'];
 $first=$_SESSION['first'];
 ?>

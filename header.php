@@ -68,7 +68,7 @@
           <a href='logout.php'><button type="button" class="btn btn-default btn-sml navbar-btn">Log Out<button></a>
       </div>
     </nav>
-    <form class="navbar-form navbar-right" role="search" method="POST" action="results.php">
+    <form class="navbar-form navbar-right" role="search" method="GET" action="results.php">
       <div class="form-group">
         <input type="text" class="form-control" id="q" name="q" placeholder="Search">
         <div id="liveSearch"></div>
