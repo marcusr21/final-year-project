@@ -58,7 +58,7 @@ if($permission=="A"){
       echo "Planned Start: ".$row[2]." Planned End: ".$row[3]."<br/>\n";
       echo "Name: ".$row[5]." ".$row[6]."</br>\n";
       $sql="SELECT loantoasset.barcode, make, model
-      FROM loantoasset INNER JOIN assets ON loantoasset.barcode = assets.barcode
+      FROM loantoasset INNER JOIN assets ON loantoasset.barcode = assets.id
       WHERE loanNumber='$loanNumber'";
       $result=mysqli_query($conn, $sql);
       if($count > 1){
@@ -121,7 +121,7 @@ elseif($permission=="C"){
         }
       }
       $sql="SELECT loantoasset.barcode, make, model
-      FROM loantoasset INNER JOIN assets ON loantoasset.barcode = assets.barcode
+      FROM loantoasset INNER JOIN assets ON loantoasset.barcode = assets.id
       WHERE loanNumber='$loanNumber'";
       $result=mysqli_query($conn, $sql);
       if($count > 1){

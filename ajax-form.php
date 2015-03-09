@@ -2,14 +2,30 @@
 session_start();
 include('connect.php');
 $uid = $_SESSION['uid'];
+$email_from = "marcus-rowland@hotmail.co.uk";
+
 
 if($_SERVER["REQUEST_METHOD"] == "POST"){
   $loanNumber = $_POST['loanNumber'];
   if(isset($_POST['type']) && $_POST['type'] == 'Approve'){
     $sql = "UPDATE loan SET approved='Y', approver='$uid' WHERE loanNumber='$loanNumber'";
     if($conn->query($sql)){
-        //$response=array('approve'=>"Loan approved");
-        header("Location: pendingLoans.php?loanNumber=".$loanNumber."&type=approved");
+      $i=0;
+      $allUser="SELECT email FROM user WHERE access='C'";
+      $result=mysqli_query($conn, $allUser);
+      while($row=mysqli_fetch_array($result)){
+        $email_to[$i]=$row['email'];
+        $i++;
+      }
+      foreach($email_to as $to){
+        $email_subject = "Loan approved";
+        $email_message = "Loan number: ".$loanNumber." has now been approved";
+        $headers = "From: ".$email_from."\r\n".
+        "Reply-To: ".$email_from."\r\n".
+        "X-Mailer: PHP/".phpversion();
+        mail($to, $email_subject, $email_message, $headers);
+      }
+      header("Location: pendingLoans.php?loanNumber=".$loanNumber."&type=approved");
     }
     else{
       $response = "An error has occured";
