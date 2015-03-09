@@ -14,7 +14,7 @@ if(isset($_SESSION['products'])){
   foreach($_SESSION['products'] as $bask_item) {
     //var_dump($bask_item);
     $barcode=$bask_item['barcode'];
-    $query="SELECT make, model, description FROM assets WHERE barcode='$barcode' LIMIT 1";
+    $query="SELECT make, model, description FROM assets WHERE id='$barcode' LIMIT 1";
     if($result=mysqli_query($conn, $query)){
       while($row=mysqli_fetch_array($result)){
         echo '<li>';
