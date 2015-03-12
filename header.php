@@ -19,7 +19,7 @@
   <script>
     $(document).ready(function(){
       $('#q').on('input', function() {
-            var searchKeyword = $(this).val();
+            var searchKeyword = $("#q").val();
             if (searchKeyword.length >= 3) {
               $.post('../search.php', { keywords: searchKeyword }, function(data) {
                 $('#liveSearch').empty()
@@ -65,14 +65,15 @@
           </ul>
         </div>
           <span class="navbar-text">Welcome back <?php echo $first; ?></span>
-          <a href='logout.php'><button type="button" class="btn btn-default btn-sml navbar-btn">Log Out<button></a>
+          <a href='logout.php'><button type="button" class="btn btn-default btn-sml navbar-btn">Log Out</a>
       </div>
     </nav>
     <form class="navbar-form navbar-right" role="search" method="GET" action="results.php">
       <div class="form-group">
         <input type="text" class="form-control" id="q" name="q" placeholder="Search">
-        <div id="liveSearch"></div>
-      </div>
+      <input type='hidden' id='name' value='normal' />
       <button type="submit" class="btn btn-default">Submit</button>
+      </div>
     </form>
+    <div id="liveSearch"></div>
   </div>
