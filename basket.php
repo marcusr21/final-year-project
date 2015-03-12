@@ -35,7 +35,7 @@ if(isset($_SESSION['products'])){
   }
   echo '</ul>';
   echo 'Please enter the reasons for this loan request below: </br>';
-  echo '<textarea name="reasons" maxlength="200"> </textarea>';
+  echo '<textarea name="reasons" class="form-control" maxlength="200"> </textarea>';
   echo '<input type="submit" class="btn btn-primary" value="Checkout" />';
   echo '</form>';
   echo '<div class="container">';
