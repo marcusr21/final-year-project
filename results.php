@@ -8,7 +8,11 @@ $current_url = $_SERVER['REQUEST_URI'];
 $i=0;
 include('header.php');
 include('connect.php');
-//require_once('search.php');
+require_once('search.php');
+
+if(isset($_SESSION['search'])){
+  echo "IT FUCKING WORKED!!!!!";
+}
 
 if($search=="" && $barcode ==""){
   $searchQuery="SELECT assets.id, make, model, tags, category.category, description, tags.tag
@@ -175,7 +179,7 @@ if($search!=""){
   </div>
 
   <div id="advancedSearch">
-    <form id='advanced' method='POST' action='results.php'>
+    <form id='advanced' method='POST' action='advancedSearch.php'>
     <div class="row">
       <div class="col-md-8">
       <div class="input-group">
@@ -191,12 +195,12 @@ if($search!=""){
     <div class="row">
       <div class="col-md-4">
         <div class="input-group">
-          Start Date: <input type="text" class="form-control" id="startDate">
+          Start Date: <input type="text" class="form-control" id="startDate" name="startDate">
         </div>
       </div>
       <div class="col-md-4">
         <div class="input-group">
-          End Date: <input type="text" class="form-control" id="endDate">
+          End Date: <input type="text" class="form-control" id="endDate" name="endDate">
         </div>
       </div>
     </div>
@@ -230,6 +234,7 @@ if($search!=""){
             echo "<input type='hidden' id='name' name='name' value='advanced' />\n";
             echo "<input type='hidden' id='query' name='query' value='".$q."' />\n";
             echo "<input type='submit' value='Search!' class='btn btn-primary btn-sml'>\n";
+            echo "<input type='hidden' id='url' value='".$current_url."' />\n";
             ?>
         </div>
     </form>
