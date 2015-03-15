@@ -19,13 +19,17 @@ if($formName='advanced'){
 
       $w = array();
 
-      var_dump($tags);
-      var_dump($cat);
+      //reference tags to a new array using ampersand
 
-      foreach($tags as $tag){
+      $newTags[] =& $tags;
+
+      foreach($newTags as $tag){
         $w[] = "tags.tag='$tag'";
       }
-      foreach($cat as $cats){
+
+      $newCat[] =& $cat;
+
+      foreach($newCat as $cats){
         $w[]="category.category='$cats'";
       }
       if($w){

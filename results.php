@@ -11,7 +11,7 @@ include('connect.php');
 require_once('search.php');
 
 if(isset($_SESSION['search'])){
-  echo "IT FUCKING WORKED!!!!!";
+  echo "IT WORKED!!!!!";
 }
 
 if($search=="" && $barcode ==""){
@@ -210,12 +210,12 @@ if($search!=""){
             //get all possible filter info from previous functions
             $uniqueCategory=array_unique($category);
             $uniqueTags=array_unique($tags);
-            echo "<div class='col-md-4'>";
-            echo "<div class='input-group'>";
-            echo "Category <select name='cat[]' id='cat' multiple>\n";
+            echo "<div class='col-md-4'>\n";
+            echo "<div class='input-group'>\n";
+            echo "Category <select name=\"cat[]\" id=\"cat\" multiple=\"multiple\">\n";
             echo "<option></option>";
             foreach($uniqueCategory as $cat){
-              echo "<option value='".$cat."'>".$cat."</option></br>\n";
+              echo "<option value=\"$cat\">".$cat."</option>\n";
             }
             echo "</select><br/>\n";
             echo "</div>";

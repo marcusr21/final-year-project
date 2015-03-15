@@ -16,7 +16,9 @@ $assetID=$_REQUEST['id'];
   ON loantoasset.barcode=assets.id
   INNER JOIN loan
   ON loan.loanNumber=loantoasset.loanNumber
-  WHERE assets.id='$assetID'";
+  WHERE assets.id='$assetID'
+  ORDER BY plannedStart ASC";
+  
   ?>
 </div>
 <?php
