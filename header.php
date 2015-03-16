@@ -34,7 +34,6 @@
 </head>
 <body>
   <?php
-  session_start();
   $first=$_SESSION['first'];
   date_default_timezone_set('UTC');
   ?>
@@ -65,7 +64,7 @@
           </ul>
         </div>
           <span class="navbar-text">Welcome back <?php echo $first; ?></span>
-          <a href='logout.php'><button type="button" class="btn btn-default btn-sml navbar-btn">Log Out</a>
+          <a href='logout.php'><button type="button" class="btn btn-default btn-sml navbar-btn">Log Out</button></a>
       </div>
     </nav>
     <form class="navbar-form navbar-right" role="search" method="GET" action="results.php">

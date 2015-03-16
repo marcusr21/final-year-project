@@ -1,6 +1,6 @@
 <?php
 session_start();
-$url = $_SESSION['url'];
+$url = isset($_SESSION['url']);
 ?>
 
 <?php
