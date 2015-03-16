@@ -5,8 +5,8 @@ include('connect.php');
 
 $formName=isset($_REQUEST['name']) ? $_REQUEST['name'] : null;
 $q=isset($_REQUEST['q']) ? $_REQUEST['q'] : null;
-$tags=isset($_REQUEST['tags']) ? $_REQUEST['tags'] : null;
-$cat=isset($_REQUEST['cat']) ? $_REQUEST['cat'] : null;
+$tags= $_REQUEST['tags'];
+$cat= $_REQUEST['cat'];
 $start=isset($_POST['startDate']) ? $_POST['startDate'] : null;
 $end=isset($_POST['endDate']) ? $_POST['endDate'] : null;
 $returnUrl = $_POST['url'];
@@ -21,20 +21,22 @@ if($formName='advanced'){
 
       //reference tags to a new array using ampersand
 
-      $newTags[] =& $tags;
+      //$newTags =& $tags;
 
-      foreach($newTags as $tag){
+      foreach((array) $tags as $tag){
         $w[] = "tags.tag='$tag'";
       }
 
-      $newCat[] =& $cat;
+      //$newCat =& $cat;
 
-      foreach($newCat as $cats){
+      foreach((array) $cat as $cats){
         $w[]="category.category='$cats'";
       }
       if($w){
         $where=implode(' OR ', $w);
       }
+
+      var_dump($where);
 
       $selectStart="SELECT * FROM loan INNER JOIN loantoasset
       ON loan.loanNumber=loantoasset.loanNumber
@@ -76,7 +78,6 @@ if($formName='advanced'){
           }
           else{
             $foundBarcode[]=$newBarcode;
-            var_dump($foundBarcode);
           }
         }
       }
@@ -92,8 +93,8 @@ if($formName='advanced'){
           $searchResult[]=array('id'=>$row['id'], 'make'=>$row['make'], 'model'=>$row['model'], 'desc'=>$row['description']);
         }
       }
+      var_dump($searchResult);
       $_SESSION['search'] = $searchResult;
-      header('Location: '.$returnUrl);
-
+      //header('Location: '.$returnUrl);
 }
 ?>
