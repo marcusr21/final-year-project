@@ -46,7 +46,6 @@
         <div>
           <ul class="nav navbar-nav">
             <li><a href="../splash.php">Home</a></li>
-            <li><a href="../bookings.php">Manage Booking</a></li>
             <li><a href="../account.php">Manage Your Account</a></li>
             <li><a href="../results.php">Book Asset</a></li>
             <li class="dropdown">

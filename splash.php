@@ -27,6 +27,11 @@ require_once('connect.php');
       while($assetRow=mysqli_fetch_array($assetResult)){
         echo "Make: ".$assetRow['make']." Model: ".$assetRow['model']."<br/>\n";
       }
+      $resultCount=mysqli_num_rows($assetResult);
+      if($resultCount = 0){
+        echo "<div class='container'>";
+        echo "<p>you currently have no assets on loan</p>";
+      }
       echo "</div>";
     }
     mysqli_free_result($result);
