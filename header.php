@@ -34,8 +34,8 @@
 </head>
 <body>
   <?php
-  $first=$_SESSION['first'];
   date_default_timezone_set('UTC');
+  $currentPage=$_SERVER['REQUEST_URI'];
   ?>
   <div class="container">
     <h1>NSU/Media</h1>
@@ -62,16 +62,24 @@
             </li>
           </ul>
         </div>
-          <span class="navbar-text">Welcome back <?php echo $first; ?></span>
-          <a href='logout.php'><button type="button" class="btn btn-default btn-sml navbar-btn">Log Out</button></a>
+        <?php
+        if(isset($_SESSION['first'])){
+            echo "<span class='navbar-text'>Welcome back ".$_SESSION['first']."</span>";
+            echo "<a href='logout.php'><button type='button' class='btn btn-default btn-sml navbar-btn'>Log Out</button></a>";
+          }
+        ?>
       </div>
     </nav>
-    <form class="navbar-form navbar-right" role="search" method="GET" action="results.php">
-      <div class="form-group">
-        <input type="text" class="form-control" id="q" name="q" placeholder="Search">
-      <input type='hidden' id='name' value='normal' />
-      <button type="submit" class="btn btn-default">Submit</button>
-      </div>
-    </form>
-    <div id="liveSearch"></div>
+    <?php
+    if($currentpage!='/index.php'||$currentpage!='/results.php'){
+    '<form class="navbar-form navbar-right" role="search" method="GET" action="results.php">';
+      '<div class="form-group">';
+        '<input type="text" class="form-control" id="q" name="q" placeholder="Search">';
+      "<input type='hidden' id='name' value='normal' />";
+      '<button type="submit" class="btn btn-default">Submit</button>';
+      '</div>';
+    '</form>';
+    '<div id="liveSearch"></div>';
+    }
+    ?>
   </div>
