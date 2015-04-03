@@ -1,8 +1,5 @@
 <?php
 session_start();
-$path = $_SERVER['DOCUMENT_ROOT'];
-$redirectPath .= $path;
-$redirectPath .= "/splash.php";
 
 $path = $_SERVER['DOCUMENT_ROOT'];
 $connectPath .= $path;
@@ -19,13 +16,13 @@ if($type=='reset'){
   $sql="SELECT token FROM user WHERE token='$token' LIMIT 1";
   $result=mysqli_query($conn, $sql);
   $number=mysqli_num_rows($result);
-  if($number=0){
+  if($number==0){
     header("Location: ../index.php");
   }
   else{
     $updatePassword="UPDATE user SET password='$hash' WHERE token='$token'";
     if($result=mysqli_query($conn, $updatePassword)){
-      $selectUser="SELECT UID, username, password, firstname FROM user WHERE token = '$token' LIMIT 1";
+      $selectUser="SELECT UID, username, password, firstname FROM user WHERE token='$token' LIMIT 1";
       $selectResult=mysqli_query($conn, $selectUser);
       while($row=mysqli_fetch_array($selectResult)){
         $UID=$row['uid'];
