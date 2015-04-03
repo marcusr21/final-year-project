@@ -35,7 +35,7 @@
 <body>
   <?php
   date_default_timezone_set('UTC');
-  $currentPage=$_SERVER['REQUEST_URI'];
+  $currentpage=$_SERVER['REQUEST_URI'];
   ?>
   <div class="container">
     <h1>NSU/Media</h1>

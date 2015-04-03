@@ -1,7 +1,11 @@
 <?php
 session_start();
-$user = $_SESSION['user'];
-$uid = $_SESSION['uid'];
+$user = isset($_SESSION['user']);
+$uid = isset($_SESSION['uid']);
+
+if($user==NULL){
+  header('Location: /index.php');
+}
 //gap to start session
 ?>
 <?php
