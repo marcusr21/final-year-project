@@ -108,7 +108,7 @@ if($search=="" && $barcode ==""){
   ORDER BY assets.id";
   if($result=mysqli_query($conn,$searchQuery))
   {
-    while($row=mysqli_fetch_row($result)){
+    while($row=mysqli_fetch_row($result)){ //filters query
       $barcodeArray[$i]=$row[0];
       $category[$i]=$row[4];
       $tags[$i]=$row[6];
@@ -123,7 +123,8 @@ if($search=="" && $barcode ==""){
     foreach($newArr as $value){
       $sqlSelect="SELECT assets.id, make, model, category.category, description
       FROM assets INNER JOIN category
-      ON assets.category=category.id";
+      ON assets.category=category.id
+      WHERE assets.id='$value'";
       if($results=mysqli_query($conn, $sqlSelect)){
         while($rows=mysqli_fetch_array($results)){
           $barcodeArrayResult[]=$rows[0];
@@ -330,7 +331,7 @@ if($search!=""){
     <h3>Results</h3>
   <?php
   if($search=="" && $barcode == "" && $query==""){
-    for($count=0; $count < count($barcodeArray); $count++){
+    for($count=0; $count < count($newArr); $count++){
         echo "<div class='form-group'>\n";
         echo "<form name='add' method='POST' action='basket_update.php'>\n";
         echo "Make: ".$make[$count]."<br> Model: ".$model[$count]."<br>\n";
