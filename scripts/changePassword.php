@@ -7,7 +7,7 @@ $connectPath .= "/connect.php";
 include($connectPath);
 
 $type=$_POST['type'];
-$token=$_POST['value'];
+$token=isset($_POST['value']);
 $password=$_POST['checkPassword'];
 
 $hash=password_hash($password, PASSWORD_BCRYPT);
@@ -48,6 +48,27 @@ if($type=='reset'){
   }
 }
 if($type=="change"){
+  $oldPassword=$_POST['oldPass'];
+  $uid=$_SESSION['UID'];
 
+  $sql="SELECT password FROM user WHERE uid='$uid'";
+  $result=mysqli_query($conn, $sql);
+  while($row=mysqli_fetch_array($result)){
+    $currentHash=$row['password'];
+  }
+
+  if(password_verify($oldPassword, $currentHash)){
+    $hash=password_hash($password, PASSWORD_BCRYPT);
+    $updatePassword="UPDATE user SET password='$hash' WHERE UID='$uid'";
+    if($updateResult=mysqli_query($conn, $updatePassword)){
+      header("Location: ../account.php?password=success");
+    }
+    else{
+      header("Location: ../account.php?password=fail");
+    }
+  }
+  else{
+    header("Location: ../account.php?password=incorrect");
+  }
 }
 ?>
