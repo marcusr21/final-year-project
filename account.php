@@ -58,7 +58,7 @@ echo "Password update ".$passwordStatus."<br>\n";
   </form>
 
   <form id="updatePassword" action="scripts/changePassword.php" method="POST">
-    <label for="oldPass">Current Password</label><input type='password' name='oldPass' />
+    <label for="oldPassLabel">Current Password</label><input type='password' name='oldPass' id='oldPass' />
     <label for="newPass">New Password</label><input type='password' name='originPass' id='originPass' />
     <label for="repeat">Repeat Password</label><input type='password' name='checkPassword' id='repeatPass' />
     <input type='hidden' name='type' value='change' />

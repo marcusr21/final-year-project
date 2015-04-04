@@ -49,9 +49,9 @@ if($type=='reset'){
 }
 if($type=="change"){
   $oldPassword=$_POST['oldPass'];
-  $uid=$_SESSION['UID'];
+  $uid=$_SESSION['uid'];
 
-  $sql="SELECT password FROM user WHERE uid='$uid'";
+  $sql="SELECT password FROM user WHERE UID='$uid'";
   $result=mysqli_query($conn, $sql);
   while($row=mysqli_fetch_array($result)){
     $currentHash=$row['password'];
