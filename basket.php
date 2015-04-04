@@ -12,7 +12,6 @@ if(isset($_SESSION['products'])){
   echo "<ul>";
 
   foreach($_SESSION['products'] as $bask_item) {
-    //var_dump($bask_item);
     $barcode=$bask_item['barcode'];
     $query="SELECT make, model, description FROM assets WHERE id='$barcode' LIMIT 1";
     if($result=mysqli_query($conn, $query)){
