@@ -25,7 +25,7 @@ if($type=='reset'){
       $selectUser="SELECT UID, username, password, firstname FROM user WHERE token='$token' LIMIT 1";
       $selectResult=mysqli_query($conn, $selectUser);
       while($row=mysqli_fetch_array($selectResult)){
-        $UID=$row['uid'];
+        $UID=$row['UID'];
         $storedHash = $row['password'];
         $first = $row['firstname'];
         $user=$row['username'];
@@ -46,5 +46,8 @@ if($type=='reset'){
       echo "Error: ".$conn->error;
     }
   }
+}
+if($type=="change"){
+
 }
 ?>
