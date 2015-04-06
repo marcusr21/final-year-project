@@ -18,6 +18,16 @@ if($result=mysqli_query($conn, $get)){
 
 <script>
 $(document).ready(function(){
+  $("#details").on('click', function(){
+    $("#changeDetails").show();
+    $("#updatePassword").hide();
+  });
+
+  $("#password").on('click', function(){
+    $("#updatePassword").show();
+    $("#changeDetails").hide();
+  })
+
   $("#repeatPass").on('input', function(){
     var input=$(this);
     var origin=$("#originPass");
@@ -36,7 +46,9 @@ $(document).ready(function(){
 
 <?php
 $passwordStatus=$_GET['password'];
-echo "Password update ".$passwordStatus."<br>\n";
+if(isset($passwordStatus)){
+  echo "Password update ".$passwordStatus."<br>\n";
+}
 ?>
 
 <div class='container'>
@@ -49,7 +61,7 @@ echo "Password update ".$passwordStatus."<br>\n";
     <h3><a href="#" id="password">Change Password</a></h3>
   </div>
 
-  <form id="changeDetails" action="management/updateUser.php" method="POST">
+  <form id="changeDetails" action="management/updateUser.php" method="POST" style="visibility:hidden">
     <label for="username">Username</label><input type='text' name='user' value=<?php echo $username ?> />
     <label for="firstname">Firstname</label><input type='text' name="first" value=<?php echo $first ?> />
     <label for="surnameLabel">Surname</label><input type='text' name='surname' value=<?php echo $surname ?> />
@@ -57,7 +69,7 @@ echo "Password update ".$passwordStatus."<br>\n";
     <button type='submit' class='btn btn-primary btn-sml'>Update Details</button>
   </form>
 
-  <form id="updatePassword" action="scripts/changePassword.php" method="POST">
+  <form id="updatePassword" action="scripts/changePassword.php" method="POST" style="visibility:hidden">
     <label for="oldPassLabel">Current Password</label><input type='password' name='oldPass' id='oldPass' />
     <label for="newPass">New Password</label><input type='password' name='originPass' id='originPass' />
     <label for="repeat">Repeat Password</label><input type='password' name='checkPassword' id='repeatPass' />
