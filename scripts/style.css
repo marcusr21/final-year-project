@@ -61,6 +61,11 @@ buttons.error {
   float: left;
 }
 
+.accountOption {
+  width: 48%;
+  float: left;
+}
+
 .loginForm {
   width: 40%;
   float: left;
