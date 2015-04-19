@@ -71,15 +71,18 @@
       </div>
     </nav>
     <?php
-    if($currentpage!='/index.php'||$currentpage!='/results.php'){
-    '<form class="navbar-form navbar-right" role="search" method="GET" action="results.php">';
-      '<div class="form-group">';
-        '<input type="text" class="form-control" id="q" name="q" placeholder="Search">';
-      "<input type='hidden' id='name' value='normal' />";
-      '<button type="submit" class="btn btn-default">Submit</button>';
-      '</div>';
-    '</form>';
-    '<div id="liveSearch"></div>';
+    if($currentpage=='/index.php' or $currentpage=='/results.php'){
+    }
+    else{
+      echo $currentpage;
+    echo '<form class="navbar-form navbar-right" role="search" method="GET" action="results.php">';
+    echo  '<div class="form-group">';
+    echo    '<input type="text" class="form-control" id="q" name="q" placeholder="Search">';
+    echo  "<input type='hidden' id='name' value='normal' />";
+    echo  '<button type="submit" class="btn btn-default">Submit</button>';
+    echo  '</div>';
+    echo'</form>';
+    echo'<div id="liveSearch"></div>';
     }
     ?>
   </div>

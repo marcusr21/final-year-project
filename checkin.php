@@ -3,17 +3,17 @@ session_start();
 include('connect.php');
 include('header.php');
 
-$loanNumber=isset($_POST['loanNumber']) ? isset($_POST['loanNumber']) : null;
+$loanNumber=$_POST['loanNumber'];
 $plannedEnd=strtotime(isset($_POST['plannedEnd'])) ? isset($_POST['plannedEnd']) : null;
 
 $todayDate=strtotime(date('Y-m-d'));
 $actualDate=date('Y-m-d');
 
-echo "<div class='container'>";
-echo "<form action='scripts/checkinUpdate' method='POST'>";
+echo "<div class='container'>\n";
+echo "<form action='scripts/checkinUpdate.php' method='POST'>\n";
 if($todayDate < $plannedEnd){
-  echo "<p>Please write the reasons for late return";
-  echo "<textarea name='datenotes' maxlength='200' class='form-control'></textarea>";
+  echo "<p>Please write the reasons for late return\n";
+  echo "<textarea name='datenotes' maxlength='200' class='form-control'></textarea>\n";
 }
 $sql="SELECT assets.id, make, model
 FROM loantoasset INNER JOIN assets
@@ -23,16 +23,17 @@ $result=mysqli_query($conn, $sql);
 while($row=mysqli_fetch_array($result)){
   echo "ID: ".$row['id']."<br/>\n";
   echo "Make: ".$row['make']." Model: ".$row['model']."<br/>\n";
-  echo "Asset Damaged? <select id='damaged".$row['id']."'>";
-  echo "<option></option>";
-  echo "<option value='yes'>Yes</option>";
-  echo "<option value='no'>No</option>";
-  echo "</select>";
-  echo "<p>If asset is damaged, please fill in the box below</p>";
-  echo "<textarea name='damaged".$row['id']."' class='form-control' maxlength='200'> </textarea>";
 }
-echo "<input type='hidden' name='loanNumber' value='".$loanNumber"' />";
-echo "<input type='submit' class='btn btn-primary btn-sml' value='Check-in' />";
-echo "</form>";
-echo "</div>";
+echo "Asset Damaged? <select id='damaged'>\n";
+echo "<option></option>\n";
+echo "<option value='yes'>Yes</option>\n";
+echo "<option value='no'>No</option>\n";
+echo "</select>\n";
+echo "<p>If asset is damaged, please fill in the box below</p>\n";
+echo "<textarea name='damagedNotes' class='form-control' maxlength='200'> </textarea>\n";
+echo "<input type='hidden' name='loanNumber' value='".$loanNumber."' />\n";
+echo "<input type='hidden' name='date' value='".$actualDate."' />\n";
+echo "<input type='submit' class='btn btn-primary btn-sml' value='Check-in' />\n";
+echo "</form>\n";
+echo "</div>\n";
 ?>

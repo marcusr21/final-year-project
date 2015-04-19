@@ -74,7 +74,7 @@ $(document).ready(function(){
       dataType: 'json',
       success: function(data) {
         $('#editForm').html(
-          'Firstname: <input type="text" name="first" value="'+data['first']+'" /><br/>Surname: <input type="text" name="surname" value="'+data['surname']+'" /><br/>Email: <input type="text" name="email" value="'+data['email']+'" /><br/> Access: <input type="text" name="acess" value="'+data['access']+'" /><input type="hidden" name="uid" value="'+data['uid']+'" />'
+          'Firstname: <input type="text" id="first" name="first" value="'+data['first']+'" /><br/>Surname: <input type="text" id="surname" name="surname" value="'+data['surname']+'" /><br/>Email: <input type="text" id="email" name="email" value="'+data['email']+'" /><br/> Access: <input type="text" name="acess" value="'+data['access']+'" /><input type="hidden" name="uid" value="'+data['uid']+'" />'
         );
         $('#editSubmit').css('visibility', 'visible');
         $('#editContent').hide();
@@ -109,6 +109,41 @@ $(document).ready(function(){
     $('#deleteClose').show();
   })
 
+  $('#email').on('input', function() {
+    var input=$(this);
+    var re = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+    var is_email=re.test(input.val());
+    if(is_email){input.removeClass("invalid").addClass("valid");}
+    else{input.removeClass("valid").addClass("invalid");}
+  });
+
+  $('#addButton').click(function(e){
+    if($('#email').hasClass("invalid")){
+      alert('Please complete all registration fields');
+      e.preventDefault(e);
+    }
+    if($.trim($('#first').val()) == ''){
+      alert('Please complete all registration fields');
+      e.preventDefault(e);
+    }
+    if($.trim($('#surname').val()) == ''){
+      alert('Please complete all registration fields');
+      e.preventDefault(e);
+    }
+    if($.trim($('#username').val()) == ''){
+      alert('Please complete all registration fields');
+      e.preventDefault(e);
+    }
+    if($.trim($('#password').val()) == ''){
+      alert('Please complete all registration fields');
+      e.preventDefault(e);
+    }
+    if($('#access').val()==""){
+      alert('Please complete all registration fields');
+      e.preventDefault(e);
+    }
+  });
+
   /*$(document).ready(function(){
     $("a").trigger("click");
   });*/
@@ -126,20 +161,20 @@ $(document).ready(function(){
   </div>
 
   <form id='add' name='add' action='updateUser.php' method='POST' style='display:none'>
-    <label for='firstname'>Firstname</label> <input type='text' name='first' />
-    <label for='surname'>Surname</label> <input type='text' name='surname' />
-    <label for='emailAddress'>Email Address</label> <input type='text' name='email' />
-    <label for='userName'>Username</label> <input type='text' name='user' />
-    <label for='pass'>Password</label> <input type='password' name='password' />
+    <label for='firstname'>Firstname</label> <input type='text' name='first' /><br/>
+    <label for='surname'>Surname</label> <input type='text' name='surname' /><br/>
+    <label for='emailAddress'>Email Address</label> <input type='text' name='email' /><br/>
+    <label for='userName'>Username</label> <input type='text' name='user' /><br/>
+    <label for='pass'>Password</label> <input type='password' name='password' /><br/>
     <label for='accessSelect'>Access Rights</label>
-    <select name='access'>
+    <select name='access' id="access">
       <option value=''></option>
       <option value='U'>User</option>
       <option value='C'>Contributor</option>
       <option value='A'>Admin</option>
     </select>
     <input type='hidden' name='type' value='add' />
-    <input type='submit' value='Add User' class='btn btn-primary btn-sml' />
+    <input type='submit' id="addButton" value='Add User' class='btn btn-primary btn-sml' /><br/>
   </form>
 
   <form id='edit' name='edit' action='updateUser.php' method='POST' style='display:none'>

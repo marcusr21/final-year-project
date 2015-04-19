@@ -6,12 +6,12 @@ $connectPath .= "/connect.php";
 include($connectPath);
 date_default_timezone_set('UTC');
 
-$barcode=$_POST['barcode'];
-$make=$_POST['make'];
-$model=$_POST['model'];
-$tags=$_POST['tags'];
-$desc=$_POST['description'];
-$cat=$_POST['category'];
+$barcode=mysqli_real_escape_string($_POST['barcode']);
+$make=mysqli_real_escape_string($_POST['make']);
+$model=mysqli_real_escape_string($_POST['model']);
+$tags=mysqli_real_escape_string($_POST['tags']);
+$desc=mysqli_real_escape_string($_POST['description']);
+$cat=mysqli_real_escape_string($_POST['category']);
 $categoryid=$_POST['cat'];
 $today=date('Y-m-d');
 
@@ -32,8 +32,8 @@ if(isset($_POST['type']) && $_POST['type']=='edit'){
   //echo json_encode($array);
 }
 elseif(isset($_POST['type']) && $_POST['type']=='add'){
-  $sql="INSERT INTO assets (id, make, model, description, category, status, createdate, tags)
-  VALUES ($barcode, '$make', '$model', '$desc', '$categoryid', 'In Stock', '$today', '$tags')";
+  $sql="INSERT INTO assets (id, make, model, description, category, status, createdate, tags, hardcase)
+  VALUES ('$barcode', '$make', '$model', '$desc', '$categoryid', 'In Stock', '$today', '$tags', 'N')";
   if(mysqli_query($conn, $sql)===TRUE){
     header('Location: manageAsset.php?type=added&id='.$barcode);
   }

@@ -9,7 +9,7 @@ $surname = $_REQUEST['sname'];
 $password = $_REQUEST['password'];
 
 //If username taken, redirect and try again
-$sql = "SELECT username FROM user WHERE username='$user' LIMIT 1";
+$sql = "SELECT username, email FROM user WHERE username='$user' OR email='$email' LIMIT 1";
 $result=mysqli_query($conn, $sql);
 if(mysqli_num_rows($result) != 0){
   $_SESSION['url'] = $_SERVER['REQUEST_URI'];

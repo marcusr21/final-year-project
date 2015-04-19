@@ -24,6 +24,22 @@ $(document).ready(function() {
       alert('Please complete all registration fields');
       e.preventDefault(e);
     }
+    if($.trim($('#fname').val()) == ''){
+      alert('Please complete all registration fields');
+      e.preventDefault(e);
+    }
+    if($.trim($('#sname').val()) == ''){
+      alert('Please complete all registration fields');
+      e.preventDefault(e);
+    }
+    if($.trim($('#username').val()) == ''){
+      alert('Please complete all registration fields');
+      e.preventDefault(e);
+    }
+    if($.trim($('#password').val()) == ''){
+      alert('Please complete all registration fields');
+      e.preventDefault(e);
+    }
   });
 });
 </script>
@@ -55,22 +71,22 @@ $(document).ready(function() {
     <h3>Register</h3>
     <form name="register" id="register" class="form-inline" action="userFunction.php" method="post">
       <div class="form-group">
-        <label for ="first">First name:</label> <input type="text" class="form-control" name="fname"><br>
+        <label for ="first">First name:</label> <input type="text" class="form-control" id="fname" name="fname"><br>
       </div>
       <div class="form-group">
-        <label for="surname">Surname:</label> <input type="text" class="form-control" name="sname"><br>
+        <label for="surname">Surname:</label> <input type="text" class="form-control" id="sname" name="sname"><br>
       </div>
       <div class="form-group">
         <label for="email">Email:</label> <input type="text" id="email" class="form-control" name="email"><br><!--live check required-->
       </div>
       <div class="form-group">
-        <label for="username">Username:</label> <input type="text" class="form-control" name="username">
+        <label for="username">Username:</label> <input type="text" id="username" class="form-control" name="username">
       <?php if($url == '/userFunction.php'){
         echo "Please choose a new username";
       } ?><br>
       </div>
       <div class="form-group">
-        <label for="password">Password:</label> <input type="password" class="form-control" name="password"><br> <!-- live checking-->
+        <label for="password">Password:</label> <input type="password" id="password" class="form-control" name="password"><br> <!-- live checking-->
       </div>
       <input class="btn btn-default btn-sml" type="submit" value="Register" id="registerButton">
     </form>

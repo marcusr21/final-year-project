@@ -7,7 +7,7 @@ include('header.php');
   <h3>Below you will find the details for the loan</h3>
   <form action='scripts/checkoutUpdate.php' method='POST'>
   <?php
-  $loanNumber=isset($_POST['loanNumber']);
+  $loanNumber=$_POST['loanNumber'];
   $plannedStart=strtotime(isset($_POST['plannedStart']));
   $plannedEnd=isset($_POST['plannedEnd']);
   $todayDate=strtotime(date("Y-m-d"));

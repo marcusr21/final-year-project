@@ -20,7 +20,7 @@ include('connect.php');
     echo "Start of Loan: ".$row['actualStart']."<br/>\n";
     echo "Planned finish: ".$row['plannedEnd']."<br/>\n";
     echo "Number of assets: ".$row['count']."<br/>\n";
-    echo "<input type='hidden' value='".$loanNumber."' name='loanNumber' />\n";
+    echo "<input type='hidden' value='".$row['loanNumber']."' name='loanNumber' />\n";
     echo "<input type='hidden' value='".$row['plannedEnd']."' name='plannedEnd' />\n";
     echo "<input type='submit' value='Check-in' class='btn btn-primary btn-sml' />\n";
     echo "</form>\n";

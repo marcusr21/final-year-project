@@ -3,8 +3,8 @@ session_start();
 $search=isset($_GET['q']) ? $_GET['q'] : "";
 $barcode=isset($_REQUEST['id']) ? $_REQUEST['id'] : "";
 $query=isset($_REQUEST['adQ']) ? $_REQUEST['adQ'] : "";
-$tagsAdvanced= $_REQUEST['tags'];
-$catAdvanced= $_REQUEST['cat'];
+$tagsAdvanced= isset($_REQUEST['tags']) ? $_REQUEST['tags'] : array("", "");
+$catAdvanced= isset($_REQUEST['cat']) ? $_REQUEST['cat'] : array("", "");
 $start=isset($_POST['startDate']) ? $_POST['startDate'] : null;
 $end=isset($_POST['endDate']) ? $_POST['endDate'] : null;
 
@@ -23,16 +23,9 @@ function advancedSearch($query, $tagsAdvanced, $catAdvanced, $startString, $endS
   $w = array();
 
   //reference tags to a new array using ampersand
-
-  //$newTags =& $tags;
-
-
   foreach( $tagsAdvanced as $tagQuery){
     $w[] = "tags.tag='$tagQuery'";
   }
-
-  //$newCat =& $cat;
-
 
   foreach($catAdvanced as $catsQuery){
     $w[]="category.category='$catsQuery'";
@@ -53,50 +46,75 @@ function advancedSearch($query, $tagsAdvanced, $catAdvanced, $startString, $endS
   else {
     echo "Error: ".$conn->error;
   }
-  $selectAsset = "SELECT assets.id
-  FROM assets INNER JOIN category
-  ON assets.category=category.id
-  INNER JOIN assettotag ON assets.id=assettotag.assetid
-  INNER JOIN tags ON assettotag.tagid=tags.tagid
-  WHERE MATCH (make, model, description, tags) AGAINST ('*$query*' IN BOOLEAN MODE)
-  AND $where";
-  $i=0;
-  if($selectResult=mysqli_query($conn, $selectAsset)){
-    while($selectRow=mysqli_fetch_array($selectResult)){
-      $barcode[]=$selectRow[0];
-    }
-    $result = array_unique($barcode);
-    foreach($result as $newBarcode){
-      if(count($unavailableStart) > 0){
-        foreach($unavailableStart as $unavailable){
-          $flag=false;
-          if($unavailable==$newBarcode){
-            $flag=true;
-          }
-          else{
-            $foundBarcode[$i]=$newBarcode;
-          }
-          $i++;
-        }
-      }
-      else{
-        $foundBarcode[]=$newBarcode;
-      }
-    }
-  }
-  else {
-    echo "Error: ".$conn->error;
-  }
-  foreach($foundBarcode as $key){
-    $sql="SELECT assets.id, make, model, description
-    FROM assets
-    WHERE assets.id='$key'";
+  if($query==""){
+    $sql="SELECT assets.id, make, model, description, category.category
+    FROM assets INNER JOIN category
+    ON assets.category=category.id";
     $result=mysqli_query($conn, $sql);
     while($row=mysqli_fetch_array($result)){
-      $searchResult[]=array('id'=>$row['id'], 'make'=>$row['make'], 'model'=>$row['model'], 'desc'=>$row['description']);
+      $searchResult[]=array('id'=>$row['id'], 'make'=>$row['make'], 'model'=>$row['model'], 'desc'=>$row['description'], 'category'=>$row['category']);
     }
+    return $seachResult;
   }
-  return $searchResult;
+  else{
+    $selectAsset = "SELECT assets.id
+    FROM assets INNER JOIN category
+    ON assets.category=category.id
+    INNER JOIN assettotag ON assets.id=assettotag.assetid
+    INNER JOIN tags ON assettotag.tagid=tags.tagid
+    WHERE MATCH (make, model, description, tags) AGAINST ('*$query*' IN BOOLEAN MODE)
+    AND $where";
+    $i=0;
+    if($selectResult=mysqli_query($conn, $selectAsset)){
+      if(mysqli_num_rows($selectResult)==0){
+        $sql="SELECT assets.id, make, model, description, category.category
+        FROM assets INNER JOIN category
+        ON assets.category=category.id";
+        $result=mysqli_query($conn, $sql);
+        while($row=mysqli_fetch_array($result)){
+          $searchResult[]=array('id'=>$row['id'], 'make'=>$row['make'], 'model'=>$row['model'], 'desc'=>$row['description'], 'category'=>$row['category']);
+        }
+        return $searchResult;
+      }
+      else{
+        while($selectRow=mysqli_fetch_array($selectResult)){
+          $barcode[]=$selectRow[0];
+        }
+      }
+      $result = array_unique($barcode);
+      foreach($result as $newBarcode){
+        if(count($unavailableStart) > 0){
+          foreach($unavailableStart as $unavailable){
+            $flag=false;
+            if($unavailable==$newBarcode){
+              $flag=true;
+            }
+            else{
+              $foundBarcode[$i]=$newBarcode;
+            }
+            $i++;
+          }
+        }
+        else{
+          $foundBarcode[]=$newBarcode;
+        }
+      }
+    }
+    else {
+      echo "Error: ".$conn->error;
+    }
+    foreach($foundBarcode as $key){
+      $sql="SELECT assets.id, make, model, description, category.category
+      FROM assets INNER JOIN category
+      ON assets.category=category.id
+      WHERE assets.id='$key'";
+      $result=mysqli_query($conn, $sql);
+      while($row=mysqli_fetch_array($result)){
+        $searchResult[]=array('id'=>$row['id'], 'make'=>$row['make'], 'model'=>$row['model'], 'desc'=>$row['description'], 'category'=>$row['category']);
+      }
+    }
+    return $searchResult;
+  }
 }
 
 if($search=="" && $barcode ==""){
@@ -173,6 +191,19 @@ if($search!=""){
         }
       }
     }
+}
+
+if($barcode!=""){
+  $sqlCat="SELECT * FROM category";
+  $sqlTag="SELECT * FROM tags";
+  $resultCat=mysqli_query($conn, $sqlCat);
+  while($rowCat=mysqli_fetch_array($resultCat)){
+    $category[]=$rowCat['category'];
+  }
+  $resultTag=mysqli_query($conn, $sqlTag);
+  while($rowTag=mysqli_fetch_array($resultTag)){
+    $tags[]=$rowTag['tag'];
+  }
 }
 ?>
 <script>
@@ -423,7 +454,8 @@ if($search!=""){
       else{
         echo "<button class='btn btn-primary btn-sml'>Add to basket</button><br/>\n";
       }
-      echo "Description: ".$result['description']."<br>\n";
+      echo "Description: ".$result['desc']."<br/>\n";
+      echo "Category: ".$result['category']."<br/>\n";
       echo "<input type='hidden' name='barcode' value='".$result['id']."' />\n";
       echo "<input type='hidden' name='url' value='".$current_url."' />\n";
       echo "<input type='hidden' name='type' value='add' />\n";

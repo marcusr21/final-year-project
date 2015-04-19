@@ -5,23 +5,24 @@ $connectPath .= $path;
 $connectPath .= "/connect.php";
 include($connectPath);
 
-$uid=$_POST['uid'];
-$first=$_POST['first'];
-$surname=$_POST['surname'];
-$email=$_POST['email'];
+$uid=mysqli_real_escape_string($_POST['uid']);
+$first=mysqli_real_escape_string($_POST['first']);
+$surname=mysqli_real_escape_string($_POST['surname']);
+$email=mysqli_real_escape_string($_POST['email']);
 $access=$_POST['access'];
-$pass=$_POST['password'];
+$pass=mysqli_real_escape_string($_POST['password']);
+$user=mysqli_real_escape_string($_POST['user']);
 
 if(isset($_POST['type']) && $_POST['type']=='add'){
   $selectQuery="SELECT * FROM user WHERE email='$email' LIMIT 1";
   $result=mysqli_query($conn, $selectQuery);
-  if(mysqli_num_rows($result) > 0){
+  if(mysqli_num_rows($result) != 0){
     header('Location: manageUser.php?type=email');
   }
   else{
     $passHash=password_hash($pass, PASSWORD_BCRYPT);
-    $sql="INSERT INTO user (firstname, surname, email, password, access)
-    VALUES ('$first', '$surname', '$email', '$passHash', '$access')";
+    $sql="INSERT INTO user (firstname, surname, username, email, password, access)
+    VALUES ('$first', '$surname', '$user', '$email', '$passHash', '$access')";
     if(mysqli_query($conn, $sql)===TRUE){
       header('Location: manageUser.php?type=added');
     }

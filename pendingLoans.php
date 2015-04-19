@@ -39,6 +39,9 @@ while($row=mysqli_fetch_row($permissionRes)){
   $permission=$row[0];
 }
 
+var_dump($uid);
+echo $permission;
+
 if($permission=="A"){
   $selectQuery="SELECT loan.loanNumber, count, plannedStart, plannedEnd, user.UID, firstname, surname
   FROM loan INNER JOIN user ON loan.UID=user.UID

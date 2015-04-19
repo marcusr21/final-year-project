@@ -19,6 +19,7 @@ $(document).ready(function(){
     $('#add').show();
     $('#edit').hide();
     $('#delete').hide();
+    $('#allAssetContainer').hide();
   });
 
   $('#editAsset').click(function(){
@@ -26,6 +27,7 @@ $(document).ready(function(){
     $('#editSearchDiv').show();
     $('#delete').hide();
     $('#add').hide();
+    $('#allAssetContainer').hide();
   });
 
   $('#deleteAsset').click(function(){
@@ -33,6 +35,7 @@ $(document).ready(function(){
     $('#deleteSearchDiv').show();
     $('#add').hide();
     $('#edit').hide();
+    $('#allAssetContainer').hide();
   });
 
   $('#editSearch').on('input', function(){
@@ -186,12 +189,12 @@ $(document).ready(function(){
     ?>
   </div>
   <form id='add' name='add' method='POST' action='updateAsset.php' style='display:none'>
-    Asset Number: <input type='text' id='barcode' name='barcode' />
-    Make: <input type='text' id='make' name='make' />
-    Model: <input type='text' id='model' name='model' />
-    Description: <textarea rows='2' cols='40' name='description' id='description'></textarea>
-    Tags: <input type='text' id='tags' name='tags' />
-    Category: <select id='cat' name='cat'>
+    Asset Number: <input type='text' id='barcode' name='barcode' /><br/>
+    Make: <input type='text' id='make' name='make' /><br/>
+    Model: <input type='text' id='model' name='model' /><br/>
+    Description: <textarea rows='2' cols='40' name='description' id='description'></textarea><br/>
+    Tags: <input type='text' id='tags' name='tags' /><br/>
+    Category: <select id='cat' name='cat'><br/>
       <option value='' selected='selected'></option>
       <?php
       $sql="SELECT * FROM category";
@@ -202,8 +205,8 @@ $(document).ready(function(){
       mysqli_free_result($results);
       ?>
     </select>
-    <input type='hidden' value='add' id='type' name='type' />
-    <input type='submit' value='Add Asset' class='btn btn-primary btn-sml' />
+    <input type='hidden' value='add' id='type' name='type' /><br/>
+    <input type='submit' value='Add Asset' class='btn btn-primary btn-sml' /><br/>
   </form>
 
   <form id='edit' name='edit' method='POST' action='updateAsset.php' style='display:none'>
