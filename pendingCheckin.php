@@ -11,7 +11,7 @@ include('connect.php');
   $sql="SELECT loanNumber, actualStart, plannedEnd, count, firstname, surname
   FROM loan INNER JOIN user
   ON loan.uid=user.uid
-  WHERE actualStart IS NOT NULL and actualEnd IS NULL";
+  WHERE actualStart IS NOT NULL and actualEnd IS NULL"; //where asset has not be checked in, display
   if($result=mysqli_query($conn,$sql)){
   while($row=mysqli_fetch_array($result)){
     echo "<form action='checkin.php' method='POST'>\n";

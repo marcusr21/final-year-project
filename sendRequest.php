@@ -3,13 +3,21 @@ session_start();
 include('connect.php');
 include('header.php');
 $uid = $_SESSION['uid'];
-$start='15-02-15';
-$end='15-02-18';
+$start=$_POST['start'];
+$end=$_POST['end'];
 $i=0;
 $description = $_POST['reasons'];
+$test_to="marcus-rowland@hotmail.co.uk";
 
-$email_to='marcus-rowland@hotmail.co.uk';
-$email_subject='Test loan';
+$email_subject='Loan Request';
+
+$allUser="SELECT email FROM user WHERE access='A'";
+$result=mysqli_query($conn, $allUser);
+while($row=mysqli_fetch_array($result)){
+  $email_to[$i]=$row['email'];
+  $i++;
+  //obtain all admin emails to send the request email
+}
 
 
 $emailQuery="SELECT email, firstname, surname FROM user WHERE UID='$uid' LIMIT 1";
@@ -28,9 +36,11 @@ foreach($_POST['make'] as $key=>$make){
   $stage_email .= "\nBarcode: ".$barcode[$i]."\n";
   $stage_email .= "Make: ".$make[$i]." Model: ".$model[$i]."\n";
   $i++;
+  //find all information of the assets to be loaned for email
 }
 
 $sqlLoan="INSERT INTO loan (count, plannedStart, plannedEnd, UID) VALUES ('$i', '$start', '$end', '$uid')";
+//insert the basic loan details into the database
 if($result=mysqli_query($conn, $sqlLoan)){
   $loanNumber = mysqli_insert_id($conn);
 }
@@ -52,10 +62,12 @@ $email_message .= $stage_email;
 $email_message .= "From: ".$start." To: ".$end."\n";
 $email_message .= $description;
 
-$headers = "From: ".$email_from."\r\n".
-"Reply-To: ".$email_from."\r\n".
-"X-Mailer: PHP/".phpversion();
-mail($email_to, $email_subject, $email_message, $headers);
+foreach($email_to as $to){
+  $headers = "From: ".$email_from."\r\n".
+  "Reply-To: ".$email_from."\r\n".
+  "X-Mailer: PHP/".phpversion();
+  mail($to, $email_subject, $email_message, $headers);
+}
 ?>
 
 <div class="container">

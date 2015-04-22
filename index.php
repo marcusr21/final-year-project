@@ -14,6 +14,7 @@ $(document).ready(function() {
   $('#email').on('input', function() {
     var input=$(this);
     var re = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+    //regular expression to check whether the email is valid or not
     var is_email=re.test(input.val());
     if(is_email){input.removeClass("invalid").addClass("valid");}
     else{input.removeClass("valid").addClass("invalid");}
@@ -40,6 +41,7 @@ $(document).ready(function() {
       alert('Please complete all registration fields');
       e.preventDefault(e);
     }
+    //a set of clauses that check whether the field is empty, including trim to remove white space
   });
 });
 </script>

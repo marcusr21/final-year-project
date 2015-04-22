@@ -76,4 +76,5 @@ if(isset($_GET['remove']) && isset($_GET['returnurl']) && isset($_SESSION['produ
   header('Location: '.$return_url);
 }
 
+//Chamling, S. (2014). Creating Simple Shopping Cart with PHP. [online] Sanwebe.com. Available at: http://www.sanwebe.com/2013/06/creating-simple-shopping-cart-with-php/comment-page-1 [Accessed 22 Feb. 2015].
 ?>

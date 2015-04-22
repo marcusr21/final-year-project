@@ -19,37 +19,37 @@ $endDate=date('Y-m-d', strtotime($end));
 
 function advancedSearch($query, $tagsAdvanced, $catAdvanced, $startString, $endString, $conn){
   $searchResults[]=array();
+  //create an array for search results
 
   $w = array();
 
-  //reference tags to a new array using ampersand
   foreach( $tagsAdvanced as $tagQuery){
-    $w[] = "tags.tag='$tagQuery'";
+    $w[] = "tags.tag='$tagQuery'"; //find all tags that need to be included in the search
   }
 
   foreach($catAdvanced as $catsQuery){
-    $w[]="category.category='$catsQuery'";
+    $w[]="category.category='$catsQuery'"; //find all categories for the search
   }
   if($w){
-    $where=implode(' OR ', $w);
+    $where=implode(' OR ', $w); //where $w is present, implode the array to crate an OR query
   }
 
   $selectStart="SELECT * FROM loan INNER JOIN loantoasset
   ON loan.loanNumber=loantoasset.loanNumber
   WHERE (plannedStart BETWEEN '$startString' AND '$endString')
-  OR (plannedEnd BETWEEN '$startString' AND '$endString')";
+  OR (plannedEnd BETWEEN '$startString' AND '$endString')"; //find all assets that cannot be loaned on the dates stated here
   if($startResult=mysqli_query($conn,$selectStart)){
     while($startRow=mysqli_fetch_array($startResult)){
-      $unavailableStart[]=$startRow['barcode'];
+      $unavailableStart[]=$startRow['barcode']; //put unavilable assets in array
     }
   }
   else {
     echo "Error: ".$conn->error;
   }
-  if($query==""){
+  if($query==""){ //if no search query exists
     $sql="SELECT assets.id, make, model, description, category.category
     FROM assets INNER JOIN category
-    ON assets.category=category.id";
+    ON assets.category=category.id"; //select all assets and return to page in array to prevent issues
     $result=mysqli_query($conn, $sql);
     while($row=mysqli_fetch_array($result)){
       $searchResult[]=array('id'=>$row['id'], 'make'=>$row['make'], 'model'=>$row['model'], 'desc'=>$row['description'], 'category'=>$row['category']);
@@ -63,10 +63,10 @@ function advancedSearch($query, $tagsAdvanced, $catAdvanced, $startString, $endS
     INNER JOIN assettotag ON assets.id=assettotag.assetid
     INNER JOIN tags ON assettotag.tagid=tags.tagid
     WHERE MATCH (make, model, description, tags) AGAINST ('*$query*' IN BOOLEAN MODE)
-    AND $where";
+    AND $where"; //complete search query using text matching and additional filters
     $i=0;
     if($selectResult=mysqli_query($conn, $selectAsset)){
-      if(mysqli_num_rows($selectResult)==0){
+      if(mysqli_num_rows($selectResult)==0){ //if no results are found
         $sql="SELECT assets.id, make, model, description, category.category
         FROM assets INNER JOIN category
         ON assets.category=category.id";
@@ -74,6 +74,7 @@ function advancedSearch($query, $tagsAdvanced, $catAdvanced, $startString, $endS
         while($row=mysqli_fetch_array($result)){
           $searchResult[]=array('id'=>$row['id'], 'make'=>$row['make'], 'model'=>$row['model'], 'desc'=>$row['description'], 'category'=>$row['category']);
         }
+        //select all assets and return to array
         return $searchResult;
       }
       else{
@@ -81,16 +82,16 @@ function advancedSearch($query, $tagsAdvanced, $catAdvanced, $startString, $endS
           $barcode[]=$selectRow[0];
         }
       }
-      $result = array_unique($barcode);
+      $result = array_unique($barcode); //check the unique barcodes returned from the search query
       foreach($result as $newBarcode){
-        if(count($unavailableStart) > 0){
+        if(count($unavailableStart) > 0){ //if there are assets unavilable
           foreach($unavailableStart as $unavailable){
             $flag=false;
-            if($unavailable==$newBarcode){
+            if($unavailable==$newBarcode){ //if the unavailable asset matches the barcode then set flag as true
               $flag=true;
             }
             else{
-              $foundBarcode[$i]=$newBarcode;
+              $foundBarcode[$i]=$newBarcode; //else set the barcode of asset available in array
             }
             $i++;
           }
@@ -108,22 +109,25 @@ function advancedSearch($query, $tagsAdvanced, $catAdvanced, $startString, $endS
       FROM assets INNER JOIN category
       ON assets.category=category.id
       WHERE assets.id='$key'";
+      //for each asset that is available on dates selected then conduct query to get all details
       $result=mysqli_query($conn, $sql);
       while($row=mysqli_fetch_array($result)){
         $searchResult[]=array('id'=>$row['id'], 'make'=>$row['make'], 'model'=>$row['model'], 'desc'=>$row['description'], 'category'=>$row['category']);
+        //push the details into the array for returning to results page
       }
     }
     return $searchResult;
   }
 }
 
-if($search=="" && $barcode ==""){
+if($search=="" && $barcode ==""){ //if both search query and barcode is empty
   $searchQuery="SELECT assets.id, make, model, tags, category.category, description, tags.tag
   FROM assets INNER JOIN category
   ON assets.category=category.id
   INNER JOIN assettotag ON assets.id=assettotag.assetid
   INNER JOIN tags ON assettotag.tagid=tags.tagid
   ORDER BY assets.id";
+  //select all assets
   if($result=mysqli_query($conn,$searchQuery))
   {
     while($row=mysqli_fetch_row($result)){ //filters query
@@ -150,7 +154,7 @@ if($search=="" && $barcode ==""){
           $model[]=$rows['model'];
           $catResult[]=$rows['category'];
           $desc[]=$rows['description'];
-        }
+        } //find assets to use in the results page
       }
     } //close foreach loop
   } //close check on mysqli_query
@@ -163,13 +167,14 @@ if($search!=""){
   INNER JOIN tags ON assettotag.tagid=tags.tagid
   WHERE MATCH (make, model, description, tags) AGAINST ('*$search*' IN BOOLEAN MODE)
   ORDER BY relevant DESC";
+  //when search query is present, create query
   if($results=mysqli_query($conn, $selectResults)){
     $i=0;
     while($row=mysqli_fetch_array($results)){
       $category[$i]=$row['category'];
       $tags[$i]=$row['tag'];
       $id[]=$row['id'];
-      $i++;
+      $i++; //find filters based on results of query
     }
       $tmpArr = array_unique($id);
       foreach($tmpArr as $v){
@@ -180,7 +185,7 @@ if($search!=""){
         $sql="SELECT assets.id, make, model, category.category, description
         FROM assets INNER JOIN category
         ON assets.category=category.id
-        WHERE assets.id='$value'";
+        WHERE assets.id='$value'"; //using values from query
         $result=mysqli_query($conn, $sql);
         while($rows=mysqli_fetch_array($result)){
           $barcode[]=$rows[0];
@@ -188,14 +193,14 @@ if($search!=""){
           $model[]=$rows['model'];
           $desc[]=$rows['description'];
           $catResult[]=$rows['category'];
-        }
+        } //find results and but into array to use later in the page
       }
     }
 }
 
-if($barcode!=""){
-  $sqlCat="SELECT * FROM category";
-  $sqlTag="SELECT * FROM tags";
+if($barcode!=""){ //if barcode is present
+  $sqlCat="SELECT * FROM category"; //all categories for advanced search
+  $sqlTag="SELECT * FROM tags"; //all tags for advanced search
   $resultCat=mysqli_query($conn, $sqlCat);
   while($rowCat=mysqli_fetch_array($resultCat)){
     $category[]=$rowCat['category'];
@@ -210,9 +215,8 @@ if($barcode!=""){
   $(document).ready(function(){
 
     $('#startDate').datepicker({
-      defaultDate: "1+w",
       numberOfMonths: 1,
-      dateFormat: "dd-mm-yy",
+      dateFormat: "yy-mm-dd",
       minDate: 0,
       onClose: function(selectedDate) {
         $('#endDate').datepicker("option", "minDate", selectedDate);
@@ -225,6 +229,7 @@ if($barcode!=""){
           success: function(json)
           {
             $("#start").val(json.start);
+            $("input[name='startBasket']").val(json.start);
             $("#startDateBasket").html(json.start);
             console.log(json);
           }
@@ -232,9 +237,8 @@ if($barcode!=""){
       }
     });
     $('#endDate').datepicker({
-      defaultDate: "2+w",
       numberOfMonths: 1,
-      dateFormat: "dd-mm-yy",
+      dateFormat: "yy-mm-dd",
       onClose: function(selectedDate) {
         $('#startDate').datepicker("option", "maxDate", selectedDate);
         var endDateVal=$('#endDate').datepicker("getDate");
@@ -247,12 +251,15 @@ if($barcode!=""){
           success: function(json)
           {
             $("#end").val(json.end);
+            $("input[name='endBasket']").val(json.end);
             $("#endDateBasket").html(json.end);
             console.log(json);
           }
         });
       }
     });
+
+    //jquery.org, j. (2015). Datepicker | jQuery UI. [online] Jqueryui.com. Available at: http://jqueryui.com/datepicker/ [Accessed 9 Mar. 2015].
 
     $('#tags').select2();
     $('#cat').select2();
@@ -276,10 +283,12 @@ if($barcode!=""){
     <?php
     if(isset($_SESSION['products'])){
       $total=0;
+      echo '<form action="basket.php" method="POST">';
       echo 'Start Date: <div id="startDateBasket"></div>';
       echo 'End Date: <div id="endDateBasket"></div>';
       echo '<ol>';
-      foreach($_SESSION['products'] as $item){
+      foreach($_SESSION['products'] as $item){ //using session from basket_update
+        //display all assets in the basket
         echo '<li class=cart-item>';
         echo '<strong>'.$item["make"].' '.$item["model"].' </strong>';
         echo '<span class="errorMessage">'.$item["message"].'</span>';
@@ -287,8 +296,12 @@ if($barcode!=""){
         echo '</li>';
       }
       echo '</ol>';
+      echo '<input type="hidden" name="startBasket" />';
+      echo '<input type="hidden" name="endBasket" />';
+      echo '<input type="hidden" name="returnurl" value="'.$current_url.'" />';
       echo '<a href="basket_update.php?remove=all&returnurl='.$current_url.'">Remove all items</a>';
-      echo '<span class="check-out"><a class="btn btn-default btn-sml" href="basket.php?returnurl='.$current_url.'">Check out</a></span>';
+      echo '<span class="check-out"><button class="btn btn-default btn-sml" type="submit">Check out</button></span>';
+      echo '</form>';
     }
     else {
       echo 'Your basket is empty';
@@ -325,7 +338,7 @@ if($barcode!=""){
     <div class="row">
       <div id="filter-wrapper">
             <?php
-            //get all possible filter info from previous functions
+            //get all possible filter info from previous functions and make unique
             $uniqueCategory=array_unique($category);
             $uniqueTags=array_unique($tags);
             echo "<div class='col-md-4'>\n";
@@ -362,6 +375,7 @@ if($barcode!=""){
     <h3>Results</h3>
   <?php
   if($search=="" && $barcode == "" && $query==""){
+    //if all blank using array, show all results
     for($count=0; $count < count($newArr); $count++){
         echo "<div class='form-group'>\n";
         echo "<form name='add' method='POST' action='basket_update.php'>\n";
@@ -377,8 +391,10 @@ if($barcode!=""){
       }
     }
   elseif($barcode!="" && $query==""){
+    //if barcode is present
     $searchQuery="SELECT assets.id, make, model, tags, category.category, description FROM assets INNER JOIN category
     ON assets.category=category.id WHERE assets.id=$barcode";
+    //select asset where barcode is present
     if($result=mysqli_query($conn,$searchQuery))
     {
       while($row=mysqli_fetch_row($result)){
@@ -402,7 +418,7 @@ if($barcode!=""){
       }
     }
   }
-  if($search!="" && $query==""){
+  if($search!="" && $query==""){ //if search term is present but advanced search is blank
     for($count=0;$count < count($barcode); $count++)
     {
             echo "<div class='form-group'>\n";
@@ -411,13 +427,14 @@ if($barcode!=""){
             echo "Category: ".$catResult[$count]."<br>\n";
             if(isset($_SESSION['products'])){
               $flag=false;
-              foreach($_SESSION['products'] as $itemArray){
+              foreach($_SESSION['products'] as $itemArray){ //if item is in the basket
                 if($itemArray['barcode']==$barcode[$count]){
                   $flag=true;
+                  //provide a button to remove instead of adding
                   echo '<a class="btn btn-danger btn-sml" href="basket_update.php?remove='.$itemArray["barcode"].'&returnurl='.$current_url.'">Remove this item</a><br/>';
                 }
               }
-              if($flag==false){
+              if($flag==false){ //else allow for asset to be added to the basket
                 echo "<button class='btn btn-primary btn-sml'>Add to basket</button><br/>\n";
               }
             }
@@ -433,17 +450,17 @@ if($barcode!=""){
           }
   }
 
-  if($query != ""){
+  if($query != ""){ //if advanced search has been used
     $searchResult=advancedSearch($query, $tagsAdvanced, $catAdvanced, $startDate, $endDate, $conn);
-    foreach($searchResult as $result){
+    foreach($searchResult as $result){ //using result returned from function
       echo "<div class='form-group'>\n";
       echo "<form method='post' action='basket_update.php'>\n";
-      echo "Make: ".$result['make']."<br> Model: ".$result['model']."<br>\n";
+      echo "Make: ".$result['make']."<br> Model: ".$result['model']."<br>\n"; //fill details using array
       if(isset($_SESSION['products'])){
         $flag=false;
         foreach($_SESSION['products'] as $itemArray){
           if($itemArray['barcode']==$barcode[$count]){
-            $flag=true;
+            $flag=true; //if present in basket then allow to remove from basket
             echo '<a class="btn btn-danger btn-sml" href="basket_update.php?remove='.$itemArray["barcode"].'&returnurl='.$current_url.'">Remove this item</a><br/>';
           }
         }

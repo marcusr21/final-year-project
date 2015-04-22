@@ -21,6 +21,7 @@ if($type=='reset'){
   }
   else{
     $updatePassword="UPDATE user SET password='$hash' WHERE token='$token'";
+    //check the token matches the one the user has suppled
     if($result=mysqli_query($conn, $updatePassword)){
       $selectUser="SELECT UID, username, password, firstname FROM user WHERE token='$token' LIMIT 1";
       $selectResult=mysqli_query($conn, $selectUser);

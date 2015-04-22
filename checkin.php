@@ -5,10 +5,11 @@ include('header.php');
 
 $loanNumber=$_POST['loanNumber'];
 $plannedEnd=strtotime(isset($_POST['plannedEnd'])) ? isset($_POST['plannedEnd']) : null;
+//convert planned check-in date
 
 $todayDate=strtotime(date('Y-m-d'));
 $actualDate=date('Y-m-d');
-
+//Get todays date
 echo "<div class='container'>\n";
 echo "<form action='scripts/checkinUpdate.php' method='POST'>\n";
 if($todayDate < $plannedEnd){

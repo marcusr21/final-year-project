@@ -31,6 +31,7 @@ require_once('connect.php');
       while($assetRow=mysqli_fetch_array($assetResult)){
         echo "Make: ".$assetRow['make']." Model: ".$assetRow['model']."<br/>\n";
       }
+      //Find all assets that are currently on loan
       $resultCount=mysqli_num_rows($assetResult);
       if($resultCount = 0){
         echo "<div class='container'>";

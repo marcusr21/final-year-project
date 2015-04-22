@@ -6,6 +6,7 @@ $user = $_REQUEST['username'];
 $password = $_REQUEST['password'];
 
 $sql="SELECT UID, username, password, firstname FROM user WHERE username = '$user'";
+//select user details based on username
 
 if($result=mysqli_query($conn,$sql)){
   while ($row=mysqli_fetch_row($result))
@@ -15,12 +16,12 @@ if($result=mysqli_query($conn,$sql)){
     $first = $row[3];
   }
 
-  if(password_verify($password, $hash)){
+  if(password_verify($password, $hash)){ //verify password entered by user against hashed password
     $_SESSION['first'] = $first;
     $_SESSION['user'] = $user;
     $_SESSION['uid'] = $UID;
     mysqli_free_result($result);
-    header('Location: splash.php');
+    header('Location: splash.php'); //set session and redirect to the system
   }
   else {
     $_SESSION['url'] = $_SERVER['REQUEST_URI'];

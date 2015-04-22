@@ -26,10 +26,8 @@ if(isset($_POST['type']) && $_POST['type']=='edit'){
     header('Location: manageAsset.php?type=edited&id='.$barcode);
   }
   else{
-    //$array=array('result'=>'Update Failed');
     echo "Error ".$conn->error;
   }
-  //echo json_encode($array);
 }
 elseif(isset($_POST['type']) && $_POST['type']=='add'){
   $sql="INSERT INTO assets (id, make, model, description, category, status, createdate, tags, hardcase)

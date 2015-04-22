@@ -39,13 +39,17 @@ while($row=mysqli_fetch_row($permissionRes)){
   $permission=$row[0];
 }
 
-var_dump($uid);
-echo $permission;
+if($permission=="S"){
+  header("Location: splash.php");
+}
+//if user is a standard user do not allow them to access the page
 
 if($permission=="A"){
+  //if user is an administrator then show the approval page
   $selectQuery="SELECT loan.loanNumber, count, plannedStart, plannedEnd, user.UID, firstname, surname
   FROM loan INNER JOIN user ON loan.UID=user.UID
   WHERE actualStart IS NULL AND approved IS NULL";
+  //Find asset that need to be approved and haven't been checked-out
 
   if(isset($_GET['loanNumber']) && isset($_GET['type'])){
     echo "Loan number: ".$_GET['loanNumber']." ".$_GET['type']."<br/>\n";
@@ -69,12 +73,14 @@ if($permission=="A"){
             $barcode=$assetRow[0];
             echo "Barcode: ".$barcode."</br>\n";
             echo "Make: ".$assetRow['make']." Model: ".$assetRow['model']."<br/>\n";
+            //if there are more than one asset in the approval complete a loop before showing more information
           }
       }
       else {
         while($singleassetRow=mysqli_fetch_array($result)){
         echo "Barcode: ".$singleassetRow[0]."</br>\n";
         echo "Make: ".$singleassetRow['make']." Model: ".$singleassetRow['model']."<br/>\n";
+        //else just show the asset
       }
         //mysqli_free_result($result);
       }
@@ -93,6 +99,7 @@ if($permission=="A"){
   }
 }
 elseif($permission=="C"){
+  //if user is a contributor, show the check-out page
   if(isset($_GET['loanNumber']) && isset($_GET['type'])){
     echo "Loan number: ".$_GET['loanNumber']." ".$_GET['type']."<br/>\n";
   }
@@ -104,10 +111,12 @@ elseif($permission=="C"){
   while($user=mysqli_fetch_array($results)){
       $users[]=$user;
   }
+  //find all approvers to match against the loan table
 
   $selectQuery="SELECT loan.loanNumber, count, plannedStart, plannedEnd, user.UID, firstname, surname, approver
   FROM loan INNER JOIN user ON loan.UID=user.UID
   WHERE actualStart IS NULL AND approved ='Y'";
+  //find all assets where they have been approved and have not been checked out yet
 
   if($selectResult=mysqli_query($conn, $selectQuery)){
     while($row=mysqli_fetch_row($selectResult)){
@@ -132,12 +141,14 @@ elseif($permission=="C"){
             $barcode=$assetRow[0];
             echo "Barcode: ".$barcode."</br>\n";
             echo "Make: ".$assetRow['make']." Model: ".$assetRow['model']."<br/>\n";
+            //If there is more than one asset to be checked out, show this information before continuing
           }
       }
       else {
         while($singleassetRow=mysqli_fetch_array($result)){
         echo "Barcode: ".$singleassetRow[0]."</br>\n";
         echo "Make: ".$singleassetRow['make']." Model: ".$singleassetRow['model']."<br/>\n";
+        //else show just the one asset
         }
       }
     echo "<input type='hidden' value='".$loanNumber."' name='loanNumber' />\n";

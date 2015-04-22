@@ -10,12 +10,14 @@ include('header.php');
       var origin=$("#newPassword");
       if(origin.val()==input.val()){input.removeClass("invalid").addClass("valid");}
       else{input.removeClass("valid").addClass("invalid");}
+      //check whether passwords math
     });
 
     $("#change").click(function(e){
       if($("#checkPassword").hasClass("invalid")){
         alert("Please ensure passwords match");
         e.preventDefault(e);
+        //prevent form submitting if passwords do not match
       }
     });
   });

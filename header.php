@@ -25,6 +25,9 @@
                 $('#liveSearch').empty()
                 $.each(data, function() {
                   $('#liveSearch').append('<li><a href="../results.php?id=' + this.id + '">' + this.make + ' ' + this.model + '</a></li>');
+                  //Live search module which is present on all pages
+                  //Uses ajax to post query to search.php once there are more than 3 characters present
+                  //Results will be returned as hyperlinks if user finds the asset they are looking for
                 });
               }, "json");
             }
@@ -74,10 +77,9 @@
     if($currentpage=='/index.php' or $currentpage=='/results.php'){
     }
     else{
-      echo $currentpage;
     echo '<form class="navbar-form navbar-right" role="search" method="GET" action="results.php">';
     echo  '<div class="form-group">';
-    echo    '<input type="text" class="form-control" id="q" name="q" placeholder="Search">';
+    echo  '<input type="text" class="form-control" id="q" name="q" placeholder="Search">';
     echo  "<input type='hidden' id='name' value='normal' />";
     echo  '<button type="submit" class="btn btn-default">Submit</button>';
     echo  '</div>';

@@ -12,6 +12,7 @@ if($result=mysqli_query($conn, $get)){
     $email=$row['email'];
     $username=$row['username'];
     $storedHash=$row['password'];
+    //Retireve all information about user to populate boxes
   }
 }
 ?>
@@ -33,12 +34,14 @@ $(document).ready(function(){
     var origin=$("#originPass");
     if(origin.val()==input.val()){input.removeClass("invalid").addClass("valid");}
     else{input.removeClass("valid").addClass("invalid");}
+    //checking that passwords match
   });
 
   $("#change").click(function(e){
     if($("#repeatPass").hasClass("invalid")){
       alert("Please ensure passwords match");
       e.preventDefault(e);
+      //if passwords do not match then prevent form from submitting
     }
   });
 });

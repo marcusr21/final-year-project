@@ -14,20 +14,21 @@ $result=mysqli_query($conn, $sql);
 if(mysqli_num_rows($result) != 0){
   $_SESSION['url'] = $_SERVER['REQUEST_URI'];
   header('Location: index.php');
-  //Need to figure out how to repopulate form
-  //Send back in session and then clear?!
+  //If a row exists then redirect to index page and inform that username/email is already taken
 }
 else {
 
   $hash = password_hash($password, PASSWORD_BCRYPT);
+  //hash the password
 
   $registerQuery = "INSERT INTO user (username, firstname, surname, email, password, access) VALUES ('$user', '$first', '$surname', '$email', '$hash', 'S')";
 
   if ($conn->query($registerQuery) === TRUE){
     $_SESSION['first'] = $first;
     $_SESSION['user'] = $user;
-    $_SESSION['uid'] = mysqli_insert_id($conn);
+    $_SESSION['uid'] = mysqli_insert_id($conn); //obtains auto increment ID
     header('Location: splash.php');
+    //set a session to be used across the system
   }
   else {
     echo "Error: " . $registerQuery . "<br>" . $conn->error;
