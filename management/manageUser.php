@@ -74,7 +74,7 @@ $(document).ready(function(){
       dataType: 'json',
       success: function(data) {
         $('#editForm').html(
-          'Firstname: <input type="text" id="first" name="first" value="'+data['first']+'" /><br/>Surname: <input type="text" id="surname" name="surname" value="'+data['surname']+'" /><br/>Email: <input type="text" id="email" name="email" value="'+data['email']+'" /><br/> Access: <input type="text" name="acess" value="'+data['access']+'" /><input type="hidden" name="uid" value="'+data['uid']+'" />'
+          'Firstname: <input type="text" id="first" name="first" value="'+data['first']+'" /><br/>Surname: <input type="text" id="surname" name="surname" value="'+data['surname']+'" /><br/>Email: <input type="text" id="email" name="email" value="'+data['email']+'" /><br/> Access: <input type="text" name="access" value="'+data['access']+'" /><input type="hidden" name="uid" value="'+data['uid']+'" />'
         );
         $('#editSubmit').css('visibility', 'visible');
         $('#editContent').hide();
