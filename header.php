@@ -59,8 +59,6 @@
                   <li class="divider"></li>
                   <li><a href="../management/manageAsset.php">Manage Asset</a></li>
                   <li><a href="../management/manageUser.php">Manage Users</a></li>
-                  <li class="divider"></li>
-                  <li><a href="../management/reports.php">Reports</a></li>
                 </ul>
             </li>
           </ul>

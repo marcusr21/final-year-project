@@ -2,12 +2,26 @@
 session_start();
 $uid = $_SESSION['uid'];
 $path = $_SERVER['DOCUMENT_ROOT'];
-$connectPath .= $path;
+$connectPath = $path;
 $connectPath .= "/connect.php";
-$headerPath .= $path;
+$headerPath = $path;
 $headerPath .= "/header.php";
 include($connectPath);
 include($headerPath);
+
+$uid=$_SESSION['uid'];
+$permissionQuery="SELECT access FROM user WHERE UID='$uid' LIMIT 1";
+$permissionRes=mysqli_query($conn, $permissionQuery);
+while($row=mysqli_fetch_row($permissionRes)){
+  $permission=$row[0];
+}
+
+if($permission=="S"){
+  header("Location: ../splash.php");
+}
+if($permission=="C"){
+  header("Location: ../splash.php");
+}
 
 if(isset($_REQUEST['type'])){
   echo $_REQUEST['id']." has been ".$_REQUEST['type'];

@@ -48,9 +48,11 @@ $(document).ready(function(){
 </script>
 
 <?php
-$passwordStatus=$_GET['password'];
-if(isset($passwordStatus)){
-  echo "Password update ".$passwordStatus."<br>\n";
+if(isset($_GET['password'])){
+  $passwordStatus=$_GET['password'];
+  if(isset($passwordStatus)){
+    echo "Password update ".$passwordStatus."<br>\n";
+  }
 }
 ?>
 
