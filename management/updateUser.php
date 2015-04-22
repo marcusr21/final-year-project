@@ -5,13 +5,13 @@ $connectPath .= $path;
 $connectPath .= "/connect.php";
 include($connectPath);
 
-$uid=mysqli_real_escape_string($_POST['uid']);
-$first=mysqli_real_escape_string($_POST['first']);
-$surname=mysqli_real_escape_string($_POST['surname']);
-$email=mysqli_real_escape_string($_POST['email']);
+$uid=mysqli_real_escape_string($conn,$_POST['uid']);
+$first=mysqli_real_escape_string($conn,$_POST['first']);
+$surname=mysqli_real_escape_string($conn,$_POST['surname']);
+$email=mysqli_real_escape_string($conn,$_POST['email']);
 $access=$_POST['access'];
-$pass=mysqli_real_escape_string($_POST['password']);
-$user=mysqli_real_escape_string($_POST['user']);
+$pass=mysqli_real_escape_string($conn,$_POST['password']);
+$user=mysqli_real_escape_string($conn,$_POST['user']);
 
 if(isset($_POST['type']) && $_POST['type']=='add'){
   $selectQuery="SELECT * FROM user WHERE email='$email' LIMIT 1";

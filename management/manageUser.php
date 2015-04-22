@@ -130,7 +130,7 @@ $(document).ready(function(){
       alert('Please complete all registration fields');
       e.preventDefault(e);
     }
-    if($.trim($('#username').val()) == ''){
+    if($.trim($('#user').val()) == ''){
       alert('Please complete all registration fields');
       e.preventDefault(e);
     }
@@ -138,7 +138,7 @@ $(document).ready(function(){
       alert('Please complete all registration fields');
       e.preventDefault(e);
     }
-    if($('#access').val()==""){
+    if($('#access').val()==''){
       alert('Please complete all registration fields');
       e.preventDefault(e);
     }
@@ -161,11 +161,11 @@ $(document).ready(function(){
   </div>
 
   <form id='add' name='add' action='updateUser.php' method='POST' style='display:none'>
-    <label for='firstname'>Firstname</label> <input type='text' name='first' /><br/>
-    <label for='surname'>Surname</label> <input type='text' name='surname' /><br/>
-    <label for='emailAddress'>Email Address</label> <input type='text' name='email' /><br/>
-    <label for='userName'>Username</label> <input type='text' name='user' /><br/>
-    <label for='pass'>Password</label> <input type='password' name='password' /><br/>
+    <label for='firstname'>Firstname</label> <input type='text' id="first" name='first' /><br/>
+    <label for='surname'>Surname</label> <input type='text' id="surname" name='surname' /><br/>
+    <label for='emailAddress'>Email Address</label> <input type='text' id="email" name='email' /><br/>
+    <label for='userName'>Username</label> <input type='text' id="user" name='user' /><br/>
+    <label for='pass'>Password</label> <input type='password' id="password" name='password' /><br/>
     <label for='accessSelect'>Access Rights</label>
     <select name='access' id="access">
       <option value=''></option>
