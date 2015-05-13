@@ -364,13 +364,15 @@ if($barcode!=""){ //if barcode is present
             echo "<input type='hidden' id='url' value='".$current_url."' />\n";
             echo "<input type='hidden' id='name' name='name' value='advanced' />\n";
             echo "<input type='hidden' id='query' name='query' value='".$search."' />\n";
+            echo "<div class='col-md-4'>";
             echo "<input type='submit' value='Search!' class='btn btn-primary btn-sml'>\n";
             echo "<input type='hidden' id='url' value='".$current_url."' />\n";
+            echo "</div>";
             ?>
         </div>
     </form>
   </div>
-
+</div>
   <div id="results">
     <h3>Results</h3>
   <?php
@@ -482,7 +484,6 @@ if($barcode!=""){ //if barcode is present
   }
   ?>
   </div>
-</div>
 <?php
 include('footer.php');
 ?>

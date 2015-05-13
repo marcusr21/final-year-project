@@ -1,3 +1,8 @@
+html, body{
+  height: 100%;
+  background-image: url("bg.jpg") !important;
+}
+
 input.invalid, textarea.invaliud {
   border: 2px solid red;
 }
@@ -28,6 +33,16 @@ buttons.error {
   top: 40%;
 }
 
+#advancedSearch{
+  width: 80%;
+  height: 100%;
+}
+
+.advancedSearchRow {
+  width: 75%;
+  height: 100%;
+}
+
 #resultFilter {
   width: 20%;
 }
@@ -50,10 +65,15 @@ buttons.error {
   }
 }
 
+.row {
+  width: 94%;
+}
+
 .shoppingBasket {
   width: 20%;
   float: right;
   position: relative;
+  margin-left: 4%;
 }
 
 .option {
@@ -75,4 +95,15 @@ buttons.error {
   border-style: solid;
   border-width: 1px;
 
+}
+
+.background {
+  min-height: 100%;
+}
+
+.background-box {
+  background-color: #FFF;
+  margin-left: 3%;
+  margin-top: 3%;
+  width: 94%;
 }

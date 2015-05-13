@@ -7,7 +7,6 @@
   <link rel="stylesheet" href="/scripts/css/bootstrap-theme.css">
   <link rel="stylesheet" href="/scripts/css/bootstrap.css">
   <link rel="stylesheet" href="/scripts/css/bootstrap-theme.min.css">
-  <link rel="stylesheet" href="/scripts/css/bootstrap.min.css">
   <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.1/css/select2.min.css" />
   <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.2.js"></script>
   <script type="text/javascript" src="http://code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
@@ -36,15 +35,16 @@
   </script>
 </head>
 <body>
+  <div class="background">
   <?php
   date_default_timezone_set('UTC');
   $currentpage=$_SERVER['REQUEST_URI'];
   ?>
+  <div class="background-box">
   <div class="container">
-    <h1>NSU/Media</h1>
-    <h2>At Northumbria Students Union</h2>
+    <img src="scripts/nsum_logo.png" />
 
-    <nav class="navbar navbar-default">
+    <nav class="navbar navbar-inverse">
       <div class="container-fluid">
         <div>
           <ul class="nav navbar-nav">

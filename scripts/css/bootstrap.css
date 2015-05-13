@@ -3421,7 +3421,7 @@ tbody.collapse.in {
   font-size: 14px;
   text-align: left;
   list-style: none;
-  background-color: #fff;
+  background-color: #333;
   -webkit-background-clip: padding-box;
           background-clip: padding-box;
   border: 1px solid #ccc;
@@ -3438,7 +3438,7 @@ tbody.collapse.in {
   height: 1px;
   margin: 9px 0;
   overflow: hidden;
-  background-color: #e5e5e5;
+  background-color: #9d9d9d;
 }
 .dropdown-menu > li > a {
   display: block;
@@ -3446,7 +3446,7 @@ tbody.collapse.in {
   clear: both;
   font-weight: normal;
   line-height: 1.42857143;
-  color: #333;
+  color: #9D9D9D;
   white-space: nowrap;
 }
 .dropdown-menu > li > a:hover,
