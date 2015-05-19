@@ -56,6 +56,7 @@
               Management <span class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu">
                   <li><a href="../pendingLoans.php">Pending Loans</a></li>
+                  <li><a href="../pendingCheckin.php">Pending Check-in</a></li>
                   <li class="divider"></li>
                   <li><a href="../management/manageAsset.php">Manage Asset</a></li>
                   <li><a href="../management/manageUser.php">Manage Users</a></li>

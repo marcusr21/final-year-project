@@ -23,12 +23,12 @@ if(isset($_SESSION['products'])){
     if($result=mysqli_query($conn, $query)){
       while($row=mysqli_fetch_array($result)){
         echo '<li>';
-        echo '<a href="basket_update.php?remove='.$barcode.'&returnurl='.$current_url.'">Remove this item</a>';
-        //provide option to remove
         echo '<div class="product-info">';
         echo '<h3>'.$row[0].'</h3> Barcode: '.$barcode;
         echo 'Make: '.$row[1];
         echo 'Description: '.$row[2];
+        echo '<a href="basket_update.php?remove='.$barcode.'&returnurl='.$current_url.'">Remove this item</a>';
+        //provide option to remove
         echo '</div>';
         echo '</li>';
 

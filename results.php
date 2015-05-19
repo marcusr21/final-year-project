@@ -385,7 +385,7 @@ if($barcode!=""){ //if barcode is present
         echo "Category: ".$catResult[$count]."<br>\n";
         echo "Description: ".$desc[$count]."<br>\n";
         echo "<input type='submit' value='Add to Basket' class='btn btn-primary btn-sml'>\n";
-        echo "<input type='hidden' name='barcode' value='".$barcodeArray[$count]."' />\n";
+        echo "<input type='hidden' name='barcode' value='".$barcodeArrayResult[$count]."' />\n";
         echo "<input type='hidden' name='url' value='".$current_url."' />\n";
         echo "<input type='hidden' name='type' value='add' />\n";
         echo "</form>\n";
